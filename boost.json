@@ -1,0 +1,12 @@
+{
+    "agents": [
+        "claude_code"
+    ],
+    "editors": [
+        "claude_code",
+        "vscode"
+    ],
+    "guidelines": [
+        "hotwired-laravel/turbo-laravel"
+    ]
+}
