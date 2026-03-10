@@ -114,8 +114,32 @@
         </div>
     </section>
 
-    <!-- Target Audience Filter -->
+    <!-- Demo Video Section -->
     <section class="py-24 bg-[var(--color-surface)]">
+        <div class="max-w-4xl mx-auto px-6 lg:px-8">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl sm:text-4xl font-display mb-4 text-[var(--color-text)]">
+                    {{ __('See It in Action') }}
+                </h2>
+                <p class="text-lg text-[var(--color-text-secondary)]">
+                    {{ __('From zero to tracking in under 30 seconds.') }}
+                </p>
+            </div>
+            <div class="relative w-full rounded-2xl overflow-hidden shadow-2xl" style="padding-bottom: 56.25%;">
+                <iframe
+                    class="absolute inset-0 w-full h-full"
+                    src="https://www.youtube.com/embed/iAdK0C3ZuuM"
+                    title="SimpleTimer Demo"
+                    frameborder="0"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                    allowfullscreen
+                ></iframe>
+            </div>
+        </div>
+    </section>
+
+    <!-- Target Audience Filter -->
+    <section class="py-24 bg-[var(--color-bg)]">
         <div class="max-w-5xl mx-auto px-6 lg:px-8">
             <div class="text-center">
                 <div class="inline-flex items-center justify-center w-16 h-16 mb-6 rounded-2xl bg-[var(--color-primary-light)]">

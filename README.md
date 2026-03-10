@@ -12,6 +12,10 @@ No page hopping. No context switching. No setup ceremony.
 
 ![SimpleTimer Dashboard](public/screenshots/dashboard.png)
 
+## Demo
+
+[![SimpleTimer Demo](https://img.youtube.com/vi/iAdK0C3ZuuM/maxresdefault.jpg)](https://www.youtube.com/watch?v=iAdK0C3ZuuM)
+
 ## Why SimpleTimer?
 
 Most time trackers overwhelm you with 100+ features you'll never use. SimpleTimer is a simple web app that gives you exactly what you need—timer, clients, projects, reports—nothing more.
