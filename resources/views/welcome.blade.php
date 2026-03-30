@@ -3,7 +3,50 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>{{ config('app.name', 'Simple') }}</title>
+    <title>{{ config('app.name', 'SimpleTimer') }} — Simple Time Tracking for Freelancers | One-Click Timer & Reports</title>
+    <meta name="description" content="SimpleTimer — dead simple time tracking for freelancers. One-click timer, client management, CSV reports. Self-host free or use managed SaaS for {{ config('app.yearly_price', '€59') }}/year. No bloat, no onboarding.">
+    <link rel="canonical" href="{{ url('/') }}">
+
+    {{-- Open Graph --}}
+    <meta property="og:title" content="{{ config('app.name', 'SimpleTimer') }} — Simple Time Tracking for Freelancers">
+    <meta property="og:description" content="One-click timer, client management, CSV reports. Self-host free or managed SaaS for {{ config('app.yearly_price', '€59') }}/year.">
+    <meta property="og:image" content="{{ asset('screenshots/dashboard.png') }}">
+    <meta property="og:url" content="{{ url('/') }}">
+    <meta property="og:type" content="website">
+
+    {{-- Twitter Card --}}
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="{{ config('app.name', 'SimpleTimer') }} — Simple Time Tracking for Freelancers">
+    <meta name="twitter:description" content="One-click timer, client management, CSV reports. Self-host free or managed SaaS for {{ config('app.yearly_price', '€59') }}/year.">
+    <meta name="twitter:image" content="{{ asset('screenshots/dashboard.png') }}">
+
+    {{-- Structured Data --}}
+    <script type="application/ld+json">
+    {
+        "@@context": "https://schema.org",
+        "@@type": "SoftwareApplication",
+        "name": "{{ config('app.name', 'SimpleTimer') }}",
+        "applicationCategory": "BusinessApplication",
+        "operatingSystem": "Web",
+        "url": "{{ url('/') }}",
+        "offers": [
+            {
+                "@@type": "Offer",
+                "price": "0",
+                "priceCurrency": "EUR",
+                "description": "Self-hosted — free forever"
+            },
+            {
+                "@@type": "Offer",
+                "price": "59",
+                "priceCurrency": "EUR",
+                "description": "Managed SaaS — yearly"
+            }
+        ],
+        "description": "Simple time tracking for freelancers. One-click timer, client management, CSV reports."
+    }
+    </script>
+
     <link href="{{ tailwindcss('css/app.css') }}" rel="stylesheet" data-turbo-track="reload" />
 </head>
 <body class="min-h-screen" style="background: var(--color-bg);">
@@ -311,7 +354,7 @@
                 <div class="space-y-6">
                     <div class="screenshot-container relative mb-6">
                         <div class="absolute -bottom-6 -right-6 w-32 h-32 bg-gradient-to-br from-[var(--color-primary)] to-[var(--color-primary-hover)] rounded-full opacity-15 blur-3xl"></div>
-                        <img src="{{ asset('screenshots/running-timer.png') }}" alt="Running timer with keyboard shortcuts" class="w-full h-[450px] object-contain object-center relative z-10">
+                        <img src="{{ asset('screenshots/running-timer.png') }}" alt="Running timer with keyboard shortcuts" class="w-full h-[450px] object-contain object-center relative z-10" loading="lazy">
                     </div>
                     <div class="inline-flex items-center gap-2 bg-[var(--color-primary-light)] text-[var(--color-primary)] px-4 py-2 rounded-full text-sm font-semibold">
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -342,7 +385,7 @@
                 <div class="space-y-6">
                     <div class="screenshot-container relative mb-6">
                         <div class="absolute -bottom-6 -right-6 w-32 h-32 bg-gradient-to-br from-green-400 to-green-600 rounded-full opacity-15 blur-3xl"></div>
-                        <img src="{{ asset('screenshots/reports.png') }}" alt="CSV reports showing per-client totals" class="w-full h-[450px] object-contain object-center relative z-10">
+                        <img src="{{ asset('screenshots/reports.png') }}" alt="CSV reports showing per-client totals" class="w-full h-[450px] object-contain object-center relative z-10" loading="lazy">
                     </div>
                     <div class="inline-flex items-center gap-2 bg-green-100 text-green-700 px-4 py-2 rounded-full text-sm font-semibold">
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -376,7 +419,7 @@
                 <div class="space-y-6">
                     <div class="screenshot-container relative mb-6">
                         <div class="absolute -top-6 -left-6 w-32 h-32 bg-gradient-to-br from-orange-400 to-orange-600 rounded-full opacity-15 blur-3xl"></div>
-                        <img src="{{ asset('screenshots/start-tracking-with-new-client.png') }}" alt="Self-hosting privacy control" class="w-full h-[450px] object-contain object-center relative z-10">
+                        <img src="{{ asset('screenshots/start-tracking-with-new-client.png') }}" alt="Self-hosting privacy control" class="w-full h-[450px] object-contain object-center relative z-10" loading="lazy">
                     </div>
                     <div class="inline-flex items-center gap-2 bg-orange-100 text-orange-700 px-4 py-2 rounded-full text-sm font-semibold">
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -407,7 +450,7 @@
                 <div class="space-y-6">
                     <div class="screenshot-container relative mb-6">
                         <div class="absolute -bottom-6 -right-6 w-32 h-32 bg-gradient-to-br from-[var(--color-primary)] to-[var(--color-primary-hover)] rounded-full opacity-15 blur-3xl"></div>
-                        <img src="{{ asset('screenshots/dashboard.png') }}" alt="Multi-currency client tracking" class="w-full h-[450px] object-contain object-center relative z-10">
+                        <img src="{{ asset('screenshots/dashboard.png') }}" alt="Multi-currency client tracking" class="w-full h-[450px] object-contain object-center relative z-10" loading="lazy">
                     </div>
                     <div class="inline-flex items-center gap-2 bg-[var(--color-primary-light)] text-[var(--color-primary)] px-4 py-2 rounded-full text-sm font-semibold">
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
