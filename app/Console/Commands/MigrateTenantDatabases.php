@@ -25,7 +25,7 @@ class MigrateTenantDatabases extends Command
 
             $this->call('migrate', [
                 '--database' => 'tenant',
-                '--path' => database_path('migrations'),
+                '--path' => 'database/migrations',
                 '--force' => true,
                 '--no-interaction' => true,
             ]);
