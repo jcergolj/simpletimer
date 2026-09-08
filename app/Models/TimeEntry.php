@@ -144,13 +144,13 @@ class TimeEntry extends Model
 
                 return null;
             },
-            set: function (mixed $value): ?string {
+            set: function (mixed $value): array {
                 if ($value instanceof Money) {
-                    return json_encode($value->toArray());
+                    return ['hourly_rate' => json_encode($value->toArray())];
                 }
 
-                return null;
+                return ['hourly_rate' => null];
             }
-        );
+        )->withoutObjectCaching();
     }
 }

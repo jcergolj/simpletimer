@@ -70,4 +70,40 @@ final class ProjectControllerTest extends TestCase
 
         $this->assertSame($newClient->id, $entry->fresh()->client_id);
     }
+
+    #[Test]
+    public function changing_a_project_rate_updates_inherited_entries(): void
+    {
+        $user = User::factory()->create();
+        $project = Project::factory()->withoutHourlyRate()->create();
+        $entry = TimeEntry::factory()->withoutHourlyRate()->create([
+            'project_id' => $project->id,
+        ]);
+
+        $response = $this->actingAs($user)->put(route('projects.update', $project), [
+            'name' => $project->name,
+            'client_id' => $project->client_id,
+            'hourly_rate' => [
+                'amount' => 175,
+                'currency' => Currency::EUR->value,
+            ],
+            'update_existing_entries' => true,
+        ]);
+
+        $response->assertValid();
+        $this->assertTrue($entry->fresh()->hourlyRate->equals(Money::fromDecimal(175, Currency::EUR)));
+    }
+
+    #[Test]
+    public function clearing_a_read_project_rate_removes_the_cached_value(): void
+    {
+        $project = Project::factory()->withoutHourlyRate()->create();
+        $project->update(['hourly_rate' => Money::fromDecimal(100, Currency::USD)]);
+
+        $project->hourlyRate;
+        $project->hourlyRate = null;
+        $project->save();
+
+        $this->assertNull($project->hourlyRate);
+    }
 }

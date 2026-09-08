@@ -42,4 +42,30 @@ final class TimeEntryTest extends TestCase
 
         $this->assertSame(20000, $rate->amount);
     }
+
+    #[Test]
+    public function replacing_a_read_time_entry_rate_persists_to_the_hourly_rate_column(): void
+    {
+        $entry = TimeEntry::factory()->withoutHourlyRate()->create();
+        $entry->update(['hourly_rate' => Money::fromDecimal(100, Currency::USD)]);
+
+        $entry->hourlyRate;
+        $entry->hourlyRate = Money::fromDecimal(200, Currency::EUR);
+        $entry->save();
+
+        $this->assertTrue($entry->fresh()->hourlyRate->equals(Money::fromDecimal(200, Currency::EUR)));
+    }
+
+    #[Test]
+    public function clearing_a_read_time_entry_rate_removes_the_cached_value(): void
+    {
+        $entry = TimeEntry::factory()->withoutHourlyRate()->create();
+        $entry->update(['hourly_rate' => Money::fromDecimal(100, Currency::USD)]);
+
+        $entry->hourlyRate;
+        $entry->hourlyRate = null;
+        $entry->save();
+
+        $this->assertNull($entry->hourlyRate);
+    }
 }

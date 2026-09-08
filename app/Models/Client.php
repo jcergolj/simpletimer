@@ -57,6 +57,6 @@ class Client extends Model
 
                 return null;
             }
-        );
+        )->withoutObjectCaching();
     }
 }
