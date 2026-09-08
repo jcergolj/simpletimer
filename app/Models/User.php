@@ -37,6 +37,11 @@ class User extends Authenticatable
         return Str::of($this->username)->substr(0, 2)->upper();
     }
 
+    public function getAuthIdentifierName(): string
+    {
+        return 'account_uuid';
+    }
+
     protected function casts(): array
     {
         return [

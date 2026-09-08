@@ -26,4 +26,13 @@ final class UserTest extends TestCase
 
         $this->assertTrue(Hash::check('password', $user->fresh()->getAuthPassword()));
     }
+
+    #[Test]
+    public function authentication_uses_the_non_reusable_account_identity(): void
+    {
+        $user = User::factory()->create();
+
+        $this->assertSame('account_uuid', $user->getAuthIdentifierName());
+        $this->assertSame($user->account_uuid, $user->getAuthIdentifier());
+    }
 }
