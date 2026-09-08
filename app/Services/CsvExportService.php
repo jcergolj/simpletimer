@@ -121,6 +121,6 @@ class CsvExportService
             return $value;
         }, $values);
 
-        fputcsv($stream, $values);
+        fputcsv($stream, $values, escape: '');
     }
 }
