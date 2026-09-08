@@ -60,13 +60,13 @@ final class EnsureTenantSessionMatchesHostTest extends TestCase
         $this->assertSame(200, $response->getStatusCode());
     }
 
-    private function requestWithTenant(string $host, string $tenant, Request $request): Request
+    private function requestWithTenant(string $host, string $tenant): Request
     {
         $session = new Store('test', new ArraySessionHandler(120));
         $session->start();
         $session->put('tenant', $tenant);
 
-        $request = $request->create("https://{$host}/dashboard");
+        $request = Request::create("https://{$host}/dashboard");
         $request->setLaravelSession($session);
 
         return $request;
