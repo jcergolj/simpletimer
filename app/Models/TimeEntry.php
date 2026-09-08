@@ -54,7 +54,14 @@ class TimeEntry extends Model
 
     public function scopeForClient($query, ?int $clientId)
     {
-        return $query->when($clientId, fn ($q) => $q->where('client_id', $clientId));
+        return $query->when($clientId, function ($query) use ($clientId) {
+            $query->where(function ($query) use ($clientId) {
+                $query->where('time_entries.client_id', $clientId)
+                    ->orWhereHas('project', function ($query) use ($clientId) {
+                        $query->where('client_id', $clientId);
+                    });
+            });
+        });
     }
 
     public function scopeForProject($query, ?int $projectId)
