@@ -30,7 +30,8 @@ class TimeEntryController extends Controller
                 $request->filled('date_to') ? Carbon::parse($request->date_to) : null
             )
             ->latestFirst()
-            ->paginate(20);
+            ->paginate(20)
+            ->withQueryString();
 
         redirect()->redirectIfLastPageEmpty($request, $timeEntries);
 

@@ -11,6 +11,7 @@ use App\Models\Project;
 use App\Models\TimeEntry;
 use App\Models\User;
 use App\ValueObjects\Money;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Config;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Test;
@@ -71,5 +72,45 @@ final class TimeEntryControllerTest extends TestCase
         $response->assertSessionHasErrors('project_id');
 
         $this->assertSame(0, TimeEntry::count());
+    }
+
+    #[Test]
+    public function pagination_preserves_time_entry_filters(): void
+    {
+        $user = User::factory()->create();
+        $client = Client::factory()->withoutHourlyRate()->create();
+        $project = Project::factory()->withoutHourlyRate()->create(['client_id' => $client->id]);
+
+        foreach (range(0, 20) as $index) {
+            TimeEntry::factory()->withoutHourlyRate()->create([
+                'start_time' => Carbon::parse('2026-09-08')->subDays($index),
+                'client_id' => $client->id,
+                'project_id' => $project->id,
+                'notes' => $index === 20 ? 'target page two entry' : 'target entry',
+            ]);
+        }
+
+        $response = $this->actingAs($user)->get(route('time-entries.index', [
+            'client_id' => $client->id,
+            'project_id' => $project->id,
+            'date_from' => '2026-01-01',
+            'date_to' => '2026-12-31',
+        ]));
+
+        $response->assertOk()
+            ->assertSee('client_id='.$client->id, false)
+            ->assertSee('project_id='.$project->id, false)
+            ->assertSee('date_from=2026-01-01', false)
+            ->assertSee('date_to=2026-12-31', false);
+
+        $pageTwoResponse = $this->actingAs($user)->get(route('time-entries.index', [
+            'client_id' => $client->id,
+            'project_id' => $project->id,
+            'date_from' => '2026-01-01',
+            'date_to' => '2026-12-31',
+            'page' => 2,
+        ]));
+
+        $pageTwoResponse->assertOk()->assertSee('target page two entry');
     }
 }
