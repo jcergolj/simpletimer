@@ -5,12 +5,12 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\ResetPasswordRequest;
 use App\Models\User;
+use App\Services\CredentialRotationService;
 use Illuminate\Auth\Events\PasswordReset;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Session;
-use Illuminate\Support\Str;
 use Illuminate\View\View;
 use Jcergolj\InAppNotifications\Facades\InAppNotification;
 
@@ -23,7 +23,7 @@ class ResetPasswordController extends Controller
         ]);
     }
 
-    public function store(ResetPasswordRequest $request): RedirectResponse
+    public function store(ResetPasswordRequest $request, CredentialRotationService $credentials): RedirectResponse
     {
         if (! $request->hasValidSignature()) {
             abort(Response::HTTP_UNAUTHORIZED, __('Invalid request.'));
@@ -49,12 +49,7 @@ class ResetPasswordController extends Controller
             abort(Response::HTTP_UNAUTHORIZED, __('Invalid request.'));
         }
 
-        $user->forceFill([
-            'password' => $request->password,
-            'password_reset_token' => null,
-        ])->setRememberToken(Str::random(60));
-
-        $user->save();
+        $credentials->rotate($user, $request->password);
 
         event(new PasswordReset($user));
 

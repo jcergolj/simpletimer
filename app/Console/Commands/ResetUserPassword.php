@@ -3,6 +3,7 @@
 namespace App\Console\Commands;
 
 use App\Models\User;
+use App\Services\CredentialRotationService;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Validator;
 
@@ -23,7 +24,7 @@ class ResetUserPassword extends Command
     protected $description = 'Reset a user\'s password by email address';
 
     /** Execute the console command. */
-    public function handle(): int
+    public function handle(CredentialRotationService $credentials): int
     {
         $email = $this->argument('email');
         $password = $this->option('password');
@@ -71,9 +72,7 @@ class ResetUserPassword extends Command
         }
 
         // Update the password
-        $user->update([
-            'password' => $password,
-        ]);
+        $credentials->rotate($user, $password);
 
         $this->components->info("Password successfully reset for user: {$user->username} ({$user->email})");
 

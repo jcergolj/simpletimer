@@ -7,6 +7,7 @@ namespace Tests\Feature\Http\Controllers\Auth;
 use App\Http\Controllers\Auth\ResetPasswordController;
 use App\Http\Requests\Auth\ResetPasswordRequest;
 use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\URL;
 use Jcergolj\FormRequestAssertions\TestableFormRequest;
@@ -91,6 +92,8 @@ final class ResetPasswordControllerTest extends TestCase
     public function user_can_reset_password_with_valid_signature(): void
     {
         $user = User::factory()->create(['email' => 'test@example.com']);
+        $previousAccountUuid = $user->account_uuid;
+        $previousRememberToken = $user->getRememberToken();
 
         $url = $this->signedResetUrl($user, 'password.update');
 
@@ -104,6 +107,10 @@ final class ResetPasswordControllerTest extends TestCase
 
         $user->refresh();
         $this->assertTrue(Hash::check('NewPassword123!', $user->password));
+        $this->assertNotSame($previousAccountUuid, $user->account_uuid);
+        $this->assertNotSame($previousRememberToken, $user->getRememberToken());
+        $this->assertNull($user->password_reset_token);
+        $this->assertNull(Auth::guard('web')->getProvider()->retrieveById($previousAccountUuid));
     }
 
     #[Test]

@@ -7,6 +7,7 @@ namespace Tests\Feature\Http\Controllers\Settings\PasswordController;
 use App\Http\Controllers\Settings\PasswordController;
 use App\Http\Requests\Settings\UpdatePasswordRequest;
 use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Jcergolj\FormRequestAssertions\TestableFormRequest;
 use PHPUnit\Framework\Attributes\CoversClass;
@@ -51,6 +52,32 @@ final class UpdateTest extends TestCase
 
         $response->assertRedirect(route('settings.password.edit'));
         $this->assertTrue(Hash::check('new-password', $user->fresh()->password));
+    }
+
+    #[Test]
+    public function updating_a_password_revokes_previous_credentials_and_keeps_the_current_session(): void
+    {
+        $user = User::factory()->create([
+            'password_reset_token' => 'outstanding-token',
+        ]);
+        $previousAccountUuid = $user->account_uuid;
+        $previousRememberToken = $user->getRememberToken();
+
+        $response = $this->actingAs($user)->put(route('settings.password.update'), [
+            'current_password' => 'password',
+            'password' => 'new-password',
+            'password_confirmation' => 'new-password',
+        ]);
+
+        $response->assertRedirect(route('settings.password.edit'));
+
+        $user->refresh();
+
+        $this->assertNotSame($previousAccountUuid, $user->account_uuid);
+        $this->assertNotSame($previousRememberToken, $user->getRememberToken());
+        $this->assertNull($user->password_reset_token);
+        $this->assertNull(Auth::guard('web')->getProvider()->retrieveById($previousAccountUuid));
+        $this->assertAuthenticatedAs($user);
     }
 
     #[Test]
