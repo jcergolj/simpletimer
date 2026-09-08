@@ -68,8 +68,8 @@ class DateRangeFilter implements Arrayable, JsonSerializable
                 $now->copy(),
             ],
             'last_month' => [
-                $now->copy()->subMonth()->startOfMonth(),
-                $now->copy()->subMonth()->endOfMonth(),
+                $now->copy()->startOfMonth()->subMonth()->startOfMonth(),
+                $now->copy()->startOfMonth()->subMonth()->endOfMonth(),
             ],
             'this_year' => [
                 $now->copy()->startOfYear(),
