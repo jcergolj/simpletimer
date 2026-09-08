@@ -2,26 +2,27 @@
 
 namespace App\Http\Controllers;
 
-use Carbon\Carbon;
+use App\Http\Requests\StoreTimeEntryRequest;
+use App\Http\Requests\TimeEntryIndexRequest;
+use App\Http\Requests\UpdateTimeEntryRequest;
 use App\Models\Client;
 use App\Models\Project;
 use App\Models\TimeEntry;
-use Illuminate\View\View;
 use App\ValueObjects\Money;
+use Carbon\Carbon;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Http\RedirectResponse;
-use App\Http\Requests\StoreTimeEntryRequest;
-use App\Http\Requests\UpdateTimeEntryRequest;
+use Illuminate\View\View;
 use Jcergolj\InAppNotifications\Facades\InAppNotification;
 
 class TimeEntryController extends Controller
 {
-    public function index(Request $request): View
+    public function index(TimeEntryIndexRequest $request): View
     {
         $timeEntries = TimeEntry::query()
-            ->with(['client', 'project'])
+            ->with(['client', 'project.client'])
             ->forClient($request->client_id)
             ->forProject($request->project_id)
             ->betweenDates(
@@ -57,19 +58,21 @@ class TimeEntryController extends Controller
         $hourlyRate = Money::fromValidated($validated);
 
         if (! $hourlyRate instanceof Money) {
-            $project = isset($validated['project_id']) ? Project::find($validated['project_id']) : null;
+            $project = isset($validated['project_id'])
+                ? Project::with('client')->find($validated['project_id'])
+                : null;
             $client = isset($validated['client_id']) ? Client::find($validated['client_id']) : null;
 
-            $hourlyRate = $project->hourlyRate ?? $client->hourlyRate ?? $request->user()->hourlyRate;
+            $hourlyRate = $this->resolveHourlyRate($project, $client, $request->user()->hourlyRate);
         }
 
         $timeEntry = TimeEntry::create([
             'start_time' => $validated['start_time'],
             'end_time' => $validated['end_time'],
             'duration' => $duration,
-            'notes' => $validated['notes'],
-            'client_id' => $validated['client_id'],
-            'project_id' => $validated['project_id'],
+            'notes' => $validated['notes'] ?? null,
+            'client_id' => $validated['client_id'] ?? null,
+            'project_id' => $validated['project_id'] ?? null,
             'hourly_rate' => $hourlyRate,
         ]);
 
@@ -82,6 +85,8 @@ class TimeEntryController extends Controller
 
     public function edit(TimeEntry $timeEntry, Request $request): View|RedirectResponse
     {
+        $timeEntry->load(['client', 'project.client']);
+
         if (! $timeEntry->end_time && $request->boolean('is_recent', false)) {
             return to_route('dashboard')
                 ->with('error', __('Cannot edit a running time entry from recent list. Please edit it from the timer widget.'));
@@ -109,19 +114,21 @@ class TimeEntryController extends Controller
         $hourlyRate = Money::fromValidated($validated);
 
         if (! $hourlyRate instanceof Money) {
-            $project = isset($validated['project_id']) ? Project::find($validated['project_id']) : null;
+            $project = isset($validated['project_id'])
+                ? Project::with('client')->find($validated['project_id'])
+                : null;
             $client = isset($validated['client_id']) ? Client::find($validated['client_id']) : null;
 
-            $hourlyRate = $project->hourlyRate ?? $client->hourlyRate ?? $request->user()->hourlyRate;
+            $hourlyRate = $this->resolveHourlyRate($project, $client, $request->user()->hourlyRate);
         }
 
         $timeEntry->update([
             'start_time' => $validated['start_time'],
             'end_time' => $validated['end_time'],
             'duration' => $duration,
-            'notes' => $validated['notes'],
-            'client_id' => $validated['client_id'],
-            'project_id' => $validated['project_id'],
+            'notes' => $validated['notes'] ?? null,
+            'client_id' => $validated['client_id'] ?? null,
+            'project_id' => $validated['project_id'] ?? null,
             'hourly_rate' => $hourlyRate,
         ]);
 
@@ -147,5 +154,23 @@ class TimeEntryController extends Controller
         }
 
         return to_intended_route('time-entries.index');
+    }
+
+    private function resolveHourlyRate(?Project $project, ?Client $client, ?Money $fallback): ?Money
+    {
+        $projectRate = null;
+        $projectClientRate = null;
+
+        if ($project instanceof Project) {
+            $projectRate = $project->hourlyRate;
+
+            if ($project->relationLoaded('client')) {
+                $projectClientRate = $project->client->hourlyRate;
+            }
+        }
+
+        $clientRate = $client instanceof Client ? $client->hourlyRate : null;
+
+        return $projectRate ?? $projectClientRate ?? $clientRate ?? $fallback;
     }
 }

@@ -41,11 +41,6 @@ class ProjectController extends Controller
 
         $hourlyRate = Money::fromValidated($validated);
 
-        if (! $hourlyRate instanceof Money) {
-            $client = Client::find($validated['client_id']);
-            $hourlyRate = $client->hourlyRate ?? $request->user()->hourlyRate;
-        }
-
         $project = Project::create([
             'name' => $validated['name'],
             'client_id' => $validated['client_id'],
@@ -72,6 +67,7 @@ class ProjectController extends Controller
 
     public function edit(Project $project): View
     {
+        $project->load('client');
         $clients = Client::all();
 
         return view('turbo::projects.edit', ['project' => $project, 'clients' => $clients]);
@@ -82,12 +78,19 @@ class ProjectController extends Controller
         $validated = $request->validated();
 
         $originalHourlyRate = $project->hourlyRate;
+        $originalClientId = $project->client_id;
 
         $project->update([
             'name' => $validated['name'],
             'client_id' => $validated['client_id'],
             'hourly_rate' => Money::fromValidated($validated),
         ]);
+
+        if ($originalClientId !== (int) $validated['client_id']) {
+            $project->timeEntries()->update([
+                'client_id' => $validated['client_id'],
+            ]);
+        }
 
         $newHourlyRate = $project->fresh()->hourlyRate;
 

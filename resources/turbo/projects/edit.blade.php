@@ -48,11 +48,11 @@
 
         <!-- Hourly Rate -->
         <div class="form-control">
-          <label class="label" for="edit_hourly_rate_amount_{{ $project->id }}">
+           <label class="label" for="hourly_rate_amount">
             <span class="label-text font-semibold">{{ __('Hourly Rate') }}</span>
             <span class="label-text-alt text-base-content/50">{{ __('Optional') }}</span>
           </label>
-          <x-form.hourly-rate :project="$project"/>
+           <x-form.hourly-rate :project="$project" :use-inherited-rate="false" :use-user-default="false" />
           <span class="label-text-alt text-base-content/50">{{ __('Override client rate') }}</span>
           <x-form.error for="hourly_rate.amount" />
         <x-form.error for="hourly_rate.currency" />
@@ -76,7 +76,7 @@
 
       <!-- Form Actions -->
       <div class="flex gap-2 justify-end">
-        <x-form.button.cancel :href="route('projects.index')" turboFrame="project-edit-form">{{ __('Cancel') }}</x-form.button.cancel>
+        <x-form.button.cancel :href="route('projects.index')" :turboFrame="'project-'.$project->id">{{ __('Cancel') }}</x-form.button.cancel>
         <x-form.button.save text="{{ __('Update Project') }}" />
       </div>
     </form>

@@ -3,6 +3,7 @@ import { Controller } from "@hotwired/stimulus";
 export default class extends Controller {
     static targets = ["input", "results", "createForm", "newProjectName", "newProjectClientId", "newProjectRate", "newProjectCurrency"];
     selectedIndex = -1;
+    requestId = 0;
 
     errorSvg = `<svg class="shrink-0 size-5 inline" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
         <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126ZM12 15.75h.007v.008H12v-.008Z" />
@@ -30,6 +31,7 @@ export default class extends Controller {
 
     query() {
         const q = this.inputTarget.value.trim();
+        const requestId = ++this.requestId;
         this.selectedIndex = -1;
 
         if (q === "") {
@@ -37,6 +39,8 @@ export default class extends Controller {
             this.clearProjectId();
             return;
         }
+
+        this.clearProjectId();
 
         // Get current client_id from the form
         const searchId = this.element.dataset.searchId || "main";
@@ -64,6 +68,10 @@ export default class extends Controller {
                 throw new Error("Network response was not ok");
             })
             .then((html) => {
+                if (requestId !== this.requestId || this.inputTarget.value.trim() !== q) {
+                    return;
+                }
+
                 this.resultsTarget.innerHTML = html;
 
                 // Handle existing project links
@@ -75,6 +83,10 @@ export default class extends Controller {
                 });
             })
             .catch((error) => {
+                if (error.name === "AbortError") {
+                    return;
+                }
+
                 console.error("Search error:", error);
             });
     }

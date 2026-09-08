@@ -63,6 +63,15 @@ class Duration implements Arrayable, JsonSerializable
         return implode(' ', $parts);
     }
 
+    public static function formatSeconds(int $totalSeconds): string
+    {
+        $hours = intdiv($totalSeconds, 3600);
+        $minutes = intdiv($totalSeconds % 3600, 60);
+        $seconds = $totalSeconds % 60;
+
+        return sprintf('%02d:%02d:%02d', $hours, $minutes, $seconds);
+    }
+
     public function toSeconds(): int
     {
         return ($this->hours * 3600) + ($this->minutes * 60);

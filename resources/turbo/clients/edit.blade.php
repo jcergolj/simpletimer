@@ -43,7 +43,7 @@
                         <span class="label-text font-semibold">{{ __('Hourly Rate') }}</span>
                         <span class="label-text-alt text-base-content/50">{{ __('Optional') }}</span>
                     </label>
-                    <x-form.hourly-rate :client="$client" />
+                 <x-form.hourly-rate :client="$client" :use-inherited-rate="false" :use-user-default="false" />
                     <x-form.error for="hourly_rate.amount" />
                     <x-form.error for="hourly_rate.currency" />
                 </div>
@@ -51,7 +51,7 @@
 
             <!-- Form Actions -->
             <div class="flex justify-end gap-2 mt-4">
-                <x-form.button.cancel :href="route('clients.index')" turboFrame="client-edit-form">{{ __('Cancel') }}</x-form.button.cancel>
+                <x-form.button.cancel :href="route('clients.index')" :turboFrame="'client-'.$client->id">{{ __('Cancel') }}</x-form.button.cancel>
                 <x-form.button.save text="{{ __('Update Client') }}" />
             </div>
         </form>

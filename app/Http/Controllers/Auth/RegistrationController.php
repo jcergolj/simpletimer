@@ -14,6 +14,7 @@ use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\Session;
 use Illuminate\View\View;
 
 final class RegistrationController extends Controller
@@ -44,16 +45,26 @@ final class RegistrationController extends Controller
         $subdomain = $validated['username'];
 
         $tenantDb->createTenantDatabase($subdomain);
-        $tenantDb->connectToTenant($subdomain);
 
-        $user = User::create([
-            'username' => $validated['username'],
-            'email' => $validated['email'],
-            'password' => $validated['password'],
-            'hourly_rate' => Money::fromValidated($validated),
-        ]);
+        try {
+            $tenantDb->connectToTenant($subdomain);
 
-        event(new Registered($user));
+            $user = User::create([
+                'username' => $validated['username'],
+                'email' => $validated['email'],
+                'password' => $validated['password'],
+                'hourly_rate' => Money::fromValidated($validated),
+            ]);
+
+            event(new Registered($user));
+        } catch (\Throwable $exception) {
+            $tenantDb->deleteTenantDatabase($subdomain);
+
+            throw $exception;
+        }
+
+        Auth::login($user);
+        Session::put(TenantDatabaseService::SESSION_KEY, $subdomain);
 
         return redirect($urlBuilder->build($subdomain, '/dashboard'));
     }

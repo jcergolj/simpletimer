@@ -13,7 +13,7 @@
 
         <meta name="csrf-token" content="{{ csrf_token() }}">
     </head>
-    <body @class(["min-h-screen", "hotwire-native" => Turbo::isHotwireNativeVisit()]) data-controller="session-recovery" style="background: var(--color-bg);">
+    <body @class(["min-h-screen", "hotwire-native" => Turbo::isHotwireNativeVisit()]) data-controller="session-recovery" data-session-recovery-session-lifetime-value="{{ config('session.lifetime') }}" style="background: var(--color-bg);">
         <!-- Top Navigation - Dark Theme -->
         <nav class="app-nav sticky top-0 z-50">
             <div class="mx-auto px-2 sm:px-4 lg:px-8">
@@ -55,8 +55,8 @@
 
                         <!-- Mobile menu button -->
                         <div class="md:hidden" data-controller="mobile-menu">
-                            <button type="button" class="mobile-menu-btn inline-flex items-center justify-center p-2 rounded-md focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white/20" aria-controls="mobile-menu" aria-expanded="false" data-action="mobile-menu#toggle">
-                                <span class="sr-only">Open main menu</span>
+                            <button type="button" class="mobile-menu-btn inline-flex items-center justify-center p-2 rounded-md focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white/20" aria-controls="mobile-menu" aria-expanded="false" aria-label="Open main menu" data-mobile-menu-target="button" data-action="mobile-menu#toggle">
+                                <span class="sr-only" data-mobile-menu-target="label">Open main menu</span>
                                 <svg data-mobile-menu-target="openIcon" class="block h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
                                 </svg>

@@ -1,5 +1,5 @@
 <x-layouts.app :title="__('Clients')">
-    <div class="space-y-8" data-controller="inline-edit">
+    <div class="space-y-8">
         <!-- Page Header -->
         <x-page-header title="Clients" subtitle="Manage your clients and their hourly rates" />
 

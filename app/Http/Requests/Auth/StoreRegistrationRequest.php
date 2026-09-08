@@ -32,7 +32,7 @@ class StoreRegistrationRequest extends AppFormRequest
             'username' => $usernameRules,
             'email' => ['required', 'string', 'lowercase', 'email', 'max:255', Rule::unique(User::class)],
             'password' => ['required', 'string', 'confirmed', Password::defaults()],
-            'hourly_rate.amount' => ['nullable', 'numeric', 'min:0'],
+            'hourly_rate.amount' => ['nullable', 'numeric', 'min:0', 'max:100000000'],
             'hourly_rate.currency' => ['required_with:hourly_rate.amount', 'string', Rule::enum(Currency::class)],
         ];
     }

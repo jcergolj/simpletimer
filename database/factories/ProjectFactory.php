@@ -41,8 +41,7 @@ class ProjectFactory extends Factory
                     currency: $this->faker->randomElement([Currency::USD, Currency::EUR, Currency::GBP])
                 );
 
-                $project->hourlyRate = $money;
-                $project->save();
+                $project->update(['hourly_rate' => $money]);
             }
         });
     }

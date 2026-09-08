@@ -50,8 +50,7 @@ class TimeEntryFactory extends Factory
                     currency: $this->faker->randomElement([Currency::USD, Currency::EUR, Currency::GBP])
                 );
 
-                $timeEntry->hourlyRate = $money;
-                $timeEntry->save();
+                $timeEntry->update(['hourly_rate' => $money]);
             }
         });
     }

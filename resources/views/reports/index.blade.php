@@ -6,13 +6,13 @@
         <!-- Filters -->
         <div class="card mx-4 sm:mx-0 p-8">
             <h2 class="font-display section-heading">{{ __('Report Filters') }}</h2>
-            <form method="GET" action="{{ route('reports.index') }}" data-controller="date-filter">
+            <form method="GET" action="{{ route('reports.index') }}" data-controller="date-filter responsive-form">
                 <!-- Mobile: Stacked layout -->
-                <div class="block xl:hidden">
+                <div class="block xl:hidden" data-responsive-form-layout>
                     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-4">
                         <div>
                             <label class="label">{{ __('Client') }}</label>
-                            <select name="client_id" class="input-field">
+                            <select name="client_id" class="input-field" aria-label="{{ __('Client') }}">
                                 <option value="">{{ __('All Clients') }}</option>
                                 @foreach($clients as $client)
                                     <option value="{{ $client->id }}" @selected(request()->client_id == $client->id)>
@@ -31,21 +31,21 @@
                         </div>
                         <div>
                             <label class="label">{{ __('From Date') }}</label>
-                            <input type="date" name="date_from" value="{{ $reportData->dateFilter->startDate?->format('Y-m-d') ?? request('date_from') }}"
+                            <input type="date" name="date_from" aria-label="{{ __('From Date') }}" value="{{ $reportData->dateFilter->startDate?->format('Y-m-d') ?? request('date_from') }}"
                                    class="input-field"
                                    data-date-filter-target="dateFrom"
                                    data-action="change->date-filter#clearDateRange">
                         </div>
                         <div>
                             <label class="label">{{ __('To Date') }}</label>
-                            <input type="date" name="date_to" value="{{ $reportData->dateFilter->endDate?->format('Y-m-d') ?? request('date_to') }}"
+                            <input type="date" name="date_to" aria-label="{{ __('To Date') }}" value="{{ $reportData->dateFilter->endDate?->format('Y-m-d') ?? request('date_to') }}"
                                    class="input-field"
                                    data-date-filter-target="dateTo"
                                    data-action="change->date-filter#clearDateRange">
                         </div>
                         <div>
                             <label class="label">{{ __('Quick Select') }}</label>
-                            <select name="date_range" class="input-field"
+                            <select name="date_range" class="input-field" aria-label="{{ __('Quick Select') }}"
                                     data-date-filter-target="dateRange"
                                     data-action="change->date-filter#clearDateInputs">
                                 <option value="" {{ request('date_range') == '' ? 'selected' : '' }}>{{ __('Custom Range') }}</option>
@@ -74,11 +74,11 @@
                 </div>
 
                 <!-- Desktop XL: Single line layout -->
-                <div class="hidden xl:block">
+                <div class="hidden xl:block" data-responsive-form-layout>
                     <div class="flex items-end gap-4 mb-4">
                         <div class="flex-1">
                             <label class="label">{{ __('Client') }}</label>
-                            <select name="client_id" class="input-field">
+                            <select name="client_id" class="input-field" aria-label="{{ __('Client') }}">
                                 <option value="">{{ __('All Clients') }}</option>
                                 @foreach($clients as $client)
                                     <option value="{{ $client->id }}" {{ request('client_id') == $client->id ? 'selected' : '' }}>
@@ -97,21 +97,21 @@
                         </div>
                         <div class="flex-1">
                             <label class="label">{{ __('From Date') }}</label>
-                            <input type="date" name="date_from" value="{{ $reportData->dateFilter->startDate?->format('Y-m-d') ?? request('date_from') }}"
+                            <input type="date" name="date_from" aria-label="{{ __('From Date') }}" value="{{ $reportData->dateFilter->startDate?->format('Y-m-d') ?? request('date_from') }}"
                                    class="input-field"
                                    data-date-filter-target="dateFrom"
                                    data-action="change->date-filter#clearDateRange">
                         </div>
                         <div class="flex-1">
                             <label class="label">{{ __('To Date') }}</label>
-                            <input type="date" name="date_to" value="{{ $reportData->dateFilter->endDate?->format('Y-m-d') ?? request('date_to') }}"
+                            <input type="date" name="date_to" aria-label="{{ __('To Date') }}" value="{{ $reportData->dateFilter->endDate?->format('Y-m-d') ?? request('date_to') }}"
                                    class="input-field"
                                    data-date-filter-target="dateTo"
                                    data-action="change->date-filter#clearDateRange">
                         </div>
                         <div class="flex-1">
                             <label class="label">{{ __('Quick Select') }}</label>
-                            <select name="date_range" class="input-field"
+                            <select name="date_range" class="input-field" aria-label="{{ __('Quick Select') }}"
                                     data-date-filter-target="dateRange"
                                     data-action="change->date-filter#clearDateInputs">
                                 <option value="" {{ request('date_range') == '' ? 'selected' : '' }}>{{ __('Custom Range') }}</option>
@@ -139,7 +139,7 @@
                     </div>
                 </div>
                 <div class="flex flex-wrap gap-2 justify-between items-center">
-                    <a href="{{ route('report-exports.show', request()->all()) }}" class="btn-export">
+                    <a href="{{ route('report-exports.show', request()->all()) }}" class="btn-export" data-turbo="false" download>
                         <svg class="btn-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
                         </svg>
@@ -157,7 +157,7 @@
                             @if($reportData->earningsByCurrency->isNotEmpty())
                                 <div class="text-lg font-bold text-gray-900">
                                     @foreach($reportData->earningsByCurrency as $currencyCode => $totalMoney)
-                                        <div>{{ $totalMoney->formatted() }}</div>
+                                        <div>{{ $totalMoney->formatted() }} ({{ $currencyCode }})</div>
                                     @endforeach
                                 </div>
                             @else
@@ -204,7 +204,7 @@
                                     <td class="py-4 px-6 font-medium text-green-600">
                                         @if($total['earningsByCurrency']->isNotEmpty())
                                             @foreach($total['earningsByCurrency'] as $currencyCode => $totalMoney)
-                                                <div>{{ $totalMoney->formatted() }}</div>
+                                                <div>{{ $totalMoney->formatted() }} ({{ $currencyCode }})</div>
                                             @endforeach
                                         @else
                                             -
@@ -250,7 +250,7 @@
                                         <div class="text-sm text-gray-500">{{ $timeEntry->project?->name ?? 'No Project' }}</div>
                                     </td>
                                     <td class="py-4 px-6">
-                                        <div class="font-mono text-gray-900">{{ gmdate('H:i:s', $timeEntry->duration) }}</div>
+                                             <div class="font-mono text-gray-900">{{ App\ValueObjects\Duration::formatSeconds($timeEntry->duration) }}</div>
                                     </td>
                                     <td class="py-4 px-6 text-gray-900">
                                         {{ $timeEntry->getEffectiveHourlyRate()?->formatted() ?? __('Not set') }}

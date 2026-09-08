@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Auth;
 use App\Facades\TenantDatabaseServiceFacade;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\StoreSessionRequest;
+use App\Services\TenantDatabaseService;
 use Illuminate\Auth\Events\Lockout;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -22,7 +23,7 @@ class SessionsController extends Controller
     public function create(Request $request): RedirectResponse|View
     {
         if (TenantDatabaseServiceFacade::isMainDomain($request) && ! Config::get('app.single_user_mode')) {
-            InAppNotification::error(_('You can only login on your subdomain.'));
+            InAppNotification::error(__('You can only login on your subdomain.'));
 
             return to_route('home');
         }
@@ -30,10 +31,10 @@ class SessionsController extends Controller
         return view('auth.login');
     }
 
-    public function store(StoreSessionRequest $request): RedirectResponse
+    public function store(StoreSessionRequest $request, TenantDatabaseService $tenantDb): RedirectResponse
     {
         if (TenantDatabaseServiceFacade::isMainDomain($request) && ! Config::get('app.single_user_mode')) {
-            InAppNotification::error(_('You can only login on your subdomain.'));
+            InAppNotification::error(__('You can only login on your subdomain.'));
 
             return to_route('home');
         }
@@ -50,6 +51,14 @@ class SessionsController extends Controller
 
         RateLimiter::clear($this->throttleKey($request));
         Session::regenerate();
+
+        if (! Config::get('app.single_user_mode')) {
+            $subdomain = $tenantDb->extractSubdomain($request);
+
+            if ($subdomain !== null) {
+                $request->session()->put(TenantDatabaseService::SESSION_KEY, $subdomain);
+            }
+        }
 
         return redirect()->intended(default: route('dashboard', absolute: false));
     }

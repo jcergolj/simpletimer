@@ -25,7 +25,7 @@ class ClientSearchController extends Controller
         return view('turbo::clients-search.index', [
             'clients' => $clients,
             'query' => $query,
-            'defaultHourlyRate' => $request->user()->hourlyRate,
+            'defaultHourlyRate' => null,
         ]);
     }
 }

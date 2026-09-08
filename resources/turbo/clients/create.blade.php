@@ -38,7 +38,7 @@
                     <span class="label-text font-semibold">{{ __('Hourly Rate') }}</span>
                     <span class="label-text-alt text-base-content/50">{{ __('Optional') }}</span>
                 </label>
-                <x-form.hourly-rate />
+                 <x-form.hourly-rate :use-user-default="false" />
                 <x-form.error for="hourly_rate.amount" />
                 <x-form.error for="hourly_rate.currency" />
             </div>

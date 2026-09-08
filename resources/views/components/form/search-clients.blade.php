@@ -6,6 +6,7 @@
         id="{{ $clientNameId }}"
         autocomplete="off"
         placeholder="Search clients..."
+        aria-label="{{ __('Search clients') }}"
         class="input-field"
         style="width: 100%; font-size: 15px;"
         value="{{ $clientName }}"

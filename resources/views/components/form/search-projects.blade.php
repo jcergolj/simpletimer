@@ -4,6 +4,7 @@
         id="{{ $projectNameId }}"
         autocomplete="off"
         placeholder="{{ __('Search or create project...') }}"
+        aria-label="{{ __('Search or create project') }}"
         class="input-field"
         style="width: 100%; font-size: 15px;"
         value="{{ $projectName }}"

@@ -1,18 +1,18 @@
 <x-layouts.app :title="__('Time Entries')">
-    <div class="space-y-8" data-controller="inline-edit">
+    <div class="space-y-8">
         <!-- Page Header -->
         <x-page-header title="Time Entries" subtitle="Track and manage your time entries" />
 
         <!-- Filters Section -->
         <div class="card card-padded mx-4 sm:mx-0">
             <h3 class="section-heading">{{ __('Filters') }}</h3>
-            <form method="GET" action="{{ route('time-entries.index') }}">
+            <form method="GET" action="{{ route('time-entries.index') }}" data-controller="responsive-form">
                 <!-- Mobile/Tablet: Stacked layout -->
-                <div class="block xl:hidden">
+                <div class="block xl:hidden" data-responsive-form-layout>
                     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-4">
                         <div>
                             <label class="label">{{ __('Client') }}</label>
-                            <select name="client_id" class="input-field">
+                            <select name="client_id" class="input-field" aria-label="{{ __('Client') }}">
                                 <option value="">{{ __('All Clients') }}</option>
                                 @foreach($clients as $client)
                                     <option value="{{ $client->id }}" {{ request('client_id') == $client->id ? 'selected' : '' }}>
@@ -31,12 +31,12 @@
                         </div>
                         <div>
                             <label class="label">{{ __('From Date') }}</label>
-                            <input type="date" name="date_from" value="{{ request('date_from') }}"
+                            <input type="date" name="date_from" aria-label="{{ __('From Date') }}" value="{{ request('date_from') }}"
                                    class="input-field">
                         </div>
                         <div>
                             <label class="label">{{ __('To Date') }}</label>
-                            <input type="date" name="date_to" value="{{ request('date_to') }}"
+                            <input type="date" name="date_to" aria-label="{{ __('To Date') }}" value="{{ request('date_to') }}"
                                    class="input-field">
                         </div>
                     </div>
@@ -56,11 +56,11 @@
                 </div>
 
                 <!-- Desktop XL: Single line layout -->
-                <div class="hidden xl:block">
+                <div class="hidden xl:block" data-responsive-form-layout>
                     <div class="flex items-end gap-4">
                         <div class="flex-1">
                             <label class="label">{{ __('Client') }}</label>
-                            <select name="client_id" class="input-field">
+                            <select name="client_id" class="input-field" aria-label="{{ __('Client') }}">
                                 <option value="">{{ __('All Clients') }}</option>
                                 @foreach($clients as $client)
                                     <option value="{{ $client->id }}" {{ request('client_id') == $client->id ? 'selected' : '' }}>
@@ -79,12 +79,12 @@
                         </div>
                         <div class="flex-1">
                             <label class="label">{{ __('From Date') }}</label>
-                            <input type="date" name="date_from" value="{{ request('date_from') }}"
+                            <input type="date" name="date_from" aria-label="{{ __('From Date') }}" value="{{ request('date_from') }}"
                                    class="input-field">
                         </div>
                         <div class="flex-1">
                             <label class="label">{{ __('To Date') }}</label>
-                            <input type="date" name="date_to" value="{{ request('date_to') }}"
+                            <input type="date" name="date_to" aria-label="{{ __('To Date') }}" value="{{ request('date_to') }}"
                                    class="input-field">
                         </div>
                         <div class="flex gap-3">

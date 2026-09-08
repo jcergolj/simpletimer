@@ -10,12 +10,12 @@ class DashboardMetricsService
 {
     public function getWeeklyMetrics(): WeeklyMetrics
     {
-        $startOfWeek = Carbon::now()->startOfWeek();
-        $endOfWeek = Carbon::now()->endOfWeek();
+        $now = Carbon::now();
+        $startOfWeek = $now->copy()->startOfWeek();
 
         $weeklyEntries = TimeEntry::query()
-            ->with(['client', 'project'])
-            ->whereBetween('start_time', [$startOfWeek, $endOfWeek])
+            ->with(['client', 'project.client'])
+            ->whereBetween('start_time', [$startOfWeek, $now])
             ->whereNotNull('end_time')
             ->get();
 
@@ -25,7 +25,7 @@ class DashboardMetricsService
     public function getRecentEntries(int $limit = 5)
     {
         return TimeEntry::query()
-            ->with(['client', 'project'])
+            ->with(['client', 'project.client'])
             ->orderBy('id', 'desc')
             ->limit($limit)
             ->get();
@@ -34,7 +34,7 @@ class DashboardMetricsService
     public function getRunningTimer(): ?TimeEntry
     {
         return TimeEntry::query()
-            ->with(['client', 'project'])
+            ->with(['client', 'project.client'])
             ->whereNull('end_time')
             ->first();
     }

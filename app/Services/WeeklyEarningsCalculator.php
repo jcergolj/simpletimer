@@ -21,18 +21,14 @@ class WeeklyEarningsCalculator
                 'currency' => $group->first()->currency,
             ]);
 
-        $totalAmount = (int) $earningsByCurrency->sum('amount');
-
         $weeklyEarnings = $earningsByCurrency
             ->sortByDesc('amount')
-            ->take(5)
             ->map(fn ($earning) => new Money($earning['amount'], $earning['currency']))
             ->values()
             ->all();
 
         return new WeeklyMetrics(
             totalHours: $totalHours,
-            totalAmount: $totalAmount,
             weeklyEarnings: $weeklyEarnings
         );
     }

@@ -1,5 +1,5 @@
 <x-layouts.app :title="__('Projects')">
-    <div class="space-y-8" data-controller="inline-edit">
+    <div class="space-y-8">
         <!-- Page Header -->
         <x-page-header title="Projects" subtitle="Manage your projects and track time" />
 

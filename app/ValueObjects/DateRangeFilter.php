@@ -43,7 +43,7 @@ class DateRangeFilter implements Arrayable, JsonSerializable
             return self::fromPeriod($period);
         }
 
-        if ($startDate && $endDate) {
+        if ($startDate || $endDate) {
             return self::fromCustomRange($startDate, $endDate);
         }
 

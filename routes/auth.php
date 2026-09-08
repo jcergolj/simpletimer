@@ -17,9 +17,6 @@ Route::middleware('guest')->group(function () {
         ->middleware('throttle:5,1')
         ->name('login.store');
 
-    Route::post('logout', [SessionsController::class, 'destroy'])
-        ->name('logout');
-
     Route::get('forgot-password', [ForgotPasswordController::class, 'create'])
         ->name('password.request');
 
@@ -66,4 +63,5 @@ Route::middleware('auth')->group(function () {
 });
 
 Route::post('logout', [SessionsController::class, 'destroy'])
+    ->middleware('auth')
     ->name('logout');

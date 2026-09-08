@@ -2,19 +2,22 @@
     <div>
         <input
             type="number"
-            id="hourly_rate"
+             id="hourly_rate_amount"
             name="hourly_rate[amount]"
             value="{{ $amount }}"
             placeholder="0.00"
             class="input-field @error('hourly_rate.amount') border-red-500 @enderror"
             style="width: 100%; font-size: 15px;"
-            step="0.01"
-            min="0"
+             step="any"
+             min="0"
+             max="100000000"
+             aria-label="{{ __('Hourly rate amount') }}"
             {{ $attributes->merge(['class' => '']) }}
         />
     </div>
     <select
         name="hourly_rate[currency]"
+        aria-label="{{ __('Hourly rate currency') }}"
         class="input-field @error('hourly_rate.currency') border-red-500 @enderror"
         style="width: 100%; font-size: 15px;"
     >

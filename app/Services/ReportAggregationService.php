@@ -46,17 +46,14 @@ class ReportAggregationService
                         return new Money($totalAmount, $currency);
                     });
 
-                $earningsForSorting = $projectEarningsByCurrency->first()?->toDecimal() ?? 0;
-
                 return [
                     'project' => $project,
                     'hours' => $hours,
                     'earningsByCurrency' => $projectEarningsByCurrency,
-                    'earningsForSorting' => $earningsForSorting,
                     'entry_count' => $entries->count(),
                 ];
             })
-            ->sortByDesc('earningsForSorting')
+            ->sortByDesc('hours')
             ->values();
     }
 

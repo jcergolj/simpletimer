@@ -12,8 +12,9 @@ import { Controller } from "@hotwired/stimulus";
  * Usage: Add data-controller="session-recovery" to <body> or root element
  */
 export default class extends Controller {
-    // Session lifetime in minutes (from config/session.php)
-    static SESSION_LIFETIME = 120;
+    static values = {
+        sessionLifetime: { type: Number, default: 120 },
+    };
     // Refresh token if within this many minutes of expiration
     static EXPIRATION_BUFFER = 5;
 
@@ -109,11 +110,9 @@ export default class extends Controller {
                 this.pendingRequests.forEach((resolve) => resolve());
                 this.pendingRequests = [];
 
-                // Update CSRF input in the form if it exists
-                const csrfInput = formElement.querySelector('input[name="_token"]');
-                if (csrfInput) {
+                document.querySelectorAll('input[name="_token"]').forEach((csrfInput) => {
                     csrfInput.value = newToken;
-                }
+                });
 
                 // Submit the form
                 formElement.requestSubmit(submitter);
@@ -132,7 +131,7 @@ export default class extends Controller {
 
     updateTokenExpiration() {
         const now = Date.now();
-        const expiresAt = now + this.constructor.SESSION_LIFETIME * 60 * 1000;
+        const expiresAt = now + this.sessionLifetimeValue * 60 * 1000;
         try {
             localStorage.setItem("csrf_token_expires_at", expiresAt.toString());
         } catch (error) {
@@ -275,8 +274,8 @@ export default class extends Controller {
             return {
                 url: url,
                 method: fetchOptions?.method || "GET",
-                headers: fetchOptions?.headers || {},
-                body: fetchOptions?.body || null,
+                headers: Object.fromEntries(new Headers(fetchOptions?.headers || {}).entries()),
+                body: this.serializeBody(fetchOptions?.body),
             };
         } catch (error) {
             console.error("Error capturing failed request:", error);
@@ -287,11 +286,47 @@ export default class extends Controller {
     isAjaxRequest(request) {
         // Check if it's an AJAX request based on headers or method
         const headers = request.headers || {};
-        const isXHR = headers["X-Requested-With"] === "XMLHttpRequest";
-        const isJSON = headers["Accept"]?.includes("application/json");
+        const isXHR = (headers["x-requested-with"] || headers["X-Requested-With"]) === "XMLHttpRequest";
+        const isJSON = (headers["accept"] || headers["Accept"])?.includes("application/json");
         const isNotGetOrHead = !["GET", "HEAD"].includes(request.method);
 
         return isXHR || isJSON || isNotGetOrHead;
+    }
+
+    serializeBody(body) {
+        if (body instanceof FormData) {
+            return {
+                type: "form-data",
+                entries: Array.from(body.entries()).map(([name, value]) => [name, String(value)]),
+            };
+        }
+
+        if (body instanceof URLSearchParams) {
+            return {
+                type: "url-search-params",
+                value: body.toString(),
+            };
+        }
+
+        return typeof body === "string" ? { type: "text", value: body } : null;
+    }
+
+    deserializeBody(body) {
+        if (!body) {
+            return undefined;
+        }
+
+        if (body.type === "form-data") {
+            const formData = new FormData();
+            body.entries.forEach(([name, value]) => formData.append(name, value));
+            return formData;
+        }
+
+        if (body.type === "url-search-params") {
+            return new URLSearchParams(body.value);
+        }
+
+        return body.type === "text" ? body.value : undefined;
     }
 
     storeFailedRequest(request) {
@@ -308,10 +343,16 @@ export default class extends Controller {
             const headers = { ...request.headers };
             headers["X-CSRF-TOKEN"] = token;
 
+            if (["GET", "HEAD"].includes(request.method)) {
+                window.location.assign(request.url);
+
+                return;
+            }
+
             const response = await fetch(request.url, {
                 method: request.method,
                 headers: headers,
-                body: request.body,
+                body: this.deserializeBody(request.body),
                 credentials: "same-origin",
             });
 
@@ -345,11 +386,19 @@ export default class extends Controller {
         try {
             const storedRequest = sessionStorage.getItem("failed_request");
             if (!storedRequest) {
+                const intendedUrl = sessionStorage.getItem("intended_url");
+
+                if (intendedUrl && new URL(intendedUrl, window.location.origin).origin === window.location.origin) {
+                    sessionStorage.removeItem("intended_url");
+                    window.location.replace(intendedUrl);
+                }
+
                 return;
             }
 
             // Clear the stored request
             sessionStorage.removeItem("failed_request");
+            sessionStorage.removeItem("intended_url");
 
             const request = JSON.parse(storedRequest);
 

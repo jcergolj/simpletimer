@@ -1,0 +1,17 @@
+.env
+.env.*
+!.env.example
+.git
+.github
+.claude
+.opencode
+vendor
+node_modules
+storage
+database/database.sqlite
+database/db
+bootstrap/cache/*.php
+public/build
+public/hot
+public/dist
+public/storage

@@ -31,7 +31,7 @@
     },
     {
         "module": "app",
-        "path": "dist/js/app-3638336a52716a414b5811a3b9c783ca25608a47.js",
+        "path": "dist/js/app-41db488068c05d42ada180ffcbe5e2dc313f35aa.js",
         "preload": true
     },
     {
@@ -45,13 +45,13 @@
         "preload": true
     },
     {
-        "module": "controllers",
-        "path": "dist/js/controllers/index-fa7043b23b6392f067504f2c5c2baeec5e211938.js",
+        "module": "controllers/flash_controller",
+        "path": "dist/js/controllers/flash_controller-fed47dad595d99f820559137046150a77bd3cca0.js",
         "preload": true
     },
     {
-        "module": "controllers/inline_edit_controller",
-        "path": "dist/js/controllers/inline_edit_controller-e29dfdcb308088852d3c5aaa74ca8e888037c647.js",
+        "module": "controllers",
+        "path": "dist/js/controllers/index-ffd337ce8930ed5375f8582343d9cbd1ff71e7e0.js",
         "preload": true
     },
     {
@@ -61,7 +61,7 @@
     },
     {
         "module": "controllers/mobile_menu_controller",
-        "path": "dist/js/controllers/mobile_menu_controller-7372564d5455dc521be91dae87187e563d5e6b12.js",
+        "path": "dist/js/controllers/mobile_menu_controller-12fe9e69069b9b6ad620f42341e2c06194a0cd00.js",
         "preload": true
     },
     {
@@ -70,18 +70,23 @@
         "preload": true
     },
     {
+        "module": "controllers/responsive_form_controller",
+        "path": "dist/js/controllers/responsive_form_controller-f4e8de274d49e9613ed9c36f54de033b7ec45fdf.js",
+        "preload": true
+    },
+    {
         "module": "controllers/search_clients_controller",
-        "path": "dist/js/controllers/search_clients_controller-318bf2de9ee08a73d2d9e5b8685c96530f1e7b7a.js",
+        "path": "dist/js/controllers/search_clients_controller-5492986f774453e4b314c4656d38f2cd3005dfcb.js",
         "preload": true
     },
     {
         "module": "controllers/search_projects_controller",
-        "path": "dist/js/controllers/search_projects_controller-5b0bc6b1face39ceb15ec399d0db389e5c19830f.js",
+        "path": "dist/js/controllers/search_projects_controller-68da64e302796aadee6ef8a42c3b770432c3ea35.js",
         "preload": true
     },
     {
         "module": "controllers/session_recovery_controller",
-        "path": "dist/js/controllers/session_recovery_controller-d51be95e585b4af07b535e4b51771c9073e8fdc9.js",
+        "path": "dist/js/controllers/session_recovery_controller-277cbde886a1b624f1697a60a6c19ea9791a9b82.js",
         "preload": true
     },
     {
@@ -126,7 +131,7 @@
     },
     {
         "module": "turbo-loading",
-        "path": "dist/js/turbo-loading-b8e1737d3cfa049361605488f478db0be294175b.js",
+        "path": "dist/js/turbo-loading-516ccf2f6753698120e1a9dc7ee9d5cd2bce5582.js",
         "preload": true
     }
 ]

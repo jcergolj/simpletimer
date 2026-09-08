@@ -39,8 +39,7 @@ class ClientFactory extends Factory
                     currency: $this->faker->randomElement([Currency::USD, Currency::EUR, Currency::GBP])
                 );
 
-                $client->hourlyRate = $money;
-                $client->save();
+                $client->update(['hourly_rate' => $money]);
             }
         });
     }

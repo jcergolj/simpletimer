@@ -7,21 +7,12 @@
         <div class="flex flex-wrap gap-2 sm:gap-3">
             @foreach($metrics->weeklyEarnings as $earning)
                 <div class="stat-value stat-value-accent">
-                    {{ $earning->formatted() }}
+                    {{ $earning->formatted() }} ({{ $earning->currency->value }})
                 </div>
             @endforeach
         </div>
 
-        @if(count($metrics->weeklyEarnings) > 1)
-            <div class="mt-4 pt-4 border-t border-[var(--border)]">
-                <div class="flex justify-end">
-                    <div class="text-xs text-[var(--text-muted)]">
-                        {{ __('Total (combined)') }}: <span class="font-medium">{{ number_format($metrics->totalAmount / 100, 2) }}</span>
-                    </div>
-                </div>
-            </div>
-        @endif
     @else
-        <div class="stat-value stat-value-accent">{{ number_format($metrics->totalAmount / 100, 2) }}</div>
+        <div class="stat-value stat-value-accent">{{ __('No earnings') }}</div>
     @endif
 </div>

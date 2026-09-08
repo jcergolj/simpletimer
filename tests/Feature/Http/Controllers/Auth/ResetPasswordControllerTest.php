@@ -40,11 +40,7 @@ final class ResetPasswordControllerTest extends TestCase
     {
         $user = User::factory()->create();
 
-        $url = URL::temporarySignedRoute(
-            'password.reset',
-            now()->addHour(),
-            ['email' => $user->email]
-        );
+        $url = $this->signedResetUrl($user);
 
         $response = $this->get($url);
 
@@ -96,11 +92,7 @@ final class ResetPasswordControllerTest extends TestCase
     {
         $user = User::factory()->create(['email' => 'test@example.com']);
 
-        $url = URL::temporarySignedRoute(
-            'password.update',
-            now()->addHour(),
-            ['email' => 'test@example.com']
-        );
+        $url = $this->signedResetUrl($user, 'password.update');
 
         $response = $this->post($url, [
             'email' => 'test@example.com',
@@ -112,6 +104,54 @@ final class ResetPasswordControllerTest extends TestCase
 
         $user->refresh();
         $this->assertTrue(Hash::check('NewPassword123!', $user->password));
+    }
+
+    #[Test]
+    public function signed_link_cannot_reset_a_different_email(): void
+    {
+        $linkOwner = User::factory()->create(['email' => 'link-owner@example.com']);
+        $targetUser = User::factory()->create(['email' => 'target@example.com']);
+
+        $url = URL::temporarySignedRoute(
+            'password.update',
+            now()->addHour(),
+            ['email' => $linkOwner->email]
+        );
+
+        $response = $this->post($url, [
+            'email' => $targetUser->email,
+            'password' => 'NewPassword123!',
+            'password_confirmation' => 'NewPassword123!',
+        ]);
+
+        $response->assertUnauthorized();
+
+        $this->assertFalse(Hash::check('NewPassword123!', $targetUser->fresh()->password));
+    }
+
+    #[Test]
+    public function reset_link_can_only_be_used_once(): void
+    {
+        $user = User::factory()->create(['email' => 'test@example.com']);
+        $url = $this->signedResetUrl($user, 'password.update');
+
+        $payload = [
+            'email' => $user->email,
+            'password' => 'NewPassword123!',
+            'password_confirmation' => 'NewPassword123!',
+        ];
+
+        $this->post($url, $payload)->assertRedirect(route('login'));
+
+        $response = $this->post($url, [
+            ...$payload,
+            'password' => 'AnotherPassword123!',
+            'password_confirmation' => 'AnotherPassword123!',
+        ]);
+
+        $response->assertUnauthorized();
+
+        $this->assertTrue(Hash::check('NewPassword123!', $user->fresh()->password));
     }
 
     #[Test]
@@ -134,7 +174,7 @@ final class ResetPasswordControllerTest extends TestCase
         $url = URL::temporarySignedRoute(
             'password.update',
             now()->addHour(),
-            ['email' => 'nonexistent@example.com']
+            ['email' => 'nonexistent@example.com', 'token' => 'token']
         );
 
         $response = $this->from($url)->post($url, [
@@ -145,5 +185,20 @@ final class ResetPasswordControllerTest extends TestCase
 
         $response->assertFound()
             ->assertRedirect($url);
+    }
+
+    private function signedResetUrl(User $user, string $route = 'password.reset'): string
+    {
+        $token = 'test-reset-token';
+
+        $user->update([
+            'password_reset_token' => hash('sha256', $token),
+        ]);
+
+        return URL::temporarySignedRoute(
+            $route,
+            now()->addHour(),
+            ['email' => $user->email, 'token' => $token]
+        );
     }
 }

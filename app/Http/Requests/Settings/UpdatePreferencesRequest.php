@@ -15,7 +15,7 @@ class UpdatePreferencesRequest extends AppFormRequest
         return [
             'date_format' => ['required', 'string', Rule::enum(DateFormat::class)],
             'time_format' => ['required', 'string', Rule::enum(TimeFormat::class)],
-            'hourly_rate.amount' => ['nullable', 'numeric', 'min:0'],
+            'hourly_rate.amount' => ['nullable', 'numeric', 'min:0', 'max:100000000'],
             'hourly_rate.currency' => ['required_with:hourly_rate.amount', 'string', Rule::enum(Currency::class)],
         ];
     }

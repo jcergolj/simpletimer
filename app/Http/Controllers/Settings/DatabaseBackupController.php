@@ -3,22 +3,23 @@
 namespace App\Http\Controllers\Settings;
 
 use App\Http\Controllers\Controller;
+use App\Services\TenantDatabaseService;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Log;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
 class DatabaseBackupController extends Controller
 {
-    public function download(): BinaryFileResponse
+    public function download(TenantDatabaseService $tenantDb): BinaryFileResponse
     {
-        $databasePath = database_path('database.sqlite');
+        $databasePath = $tenantDb->getActiveDatabasePath();
 
-        if (! File::exists($databasePath)) {
-            abort(404, 'Database file not found');
+        if ($databasePath === null || ! File::exists($databasePath)) {
+            abort(404, __('Database file not found.'));
         }
 
         if (! File::isReadable($databasePath)) {
-            abort(403, 'Database file is not readable');
+            abort(403, __('Database file is not readable.'));
         }
 
         Log::info('Database backup downloaded', [

@@ -11,8 +11,8 @@ Stimulus.register('bridge--form', Bridge__FormController)
 import DateFilterController from 'controllers/date_filter_controller'
 Stimulus.register('date-filter', DateFilterController)
 
-import InlineEditController from 'controllers/inline_edit_controller'
-Stimulus.register('inline-edit', InlineEditController)
+import FlashController from 'controllers/flash_controller'
+Stimulus.register('flash', FlashController)
 
 import KeyboardShortcutsController from 'controllers/keyboard_shortcuts_controller'
 Stimulus.register('keyboard-shortcuts', KeyboardShortcutsController)
@@ -22,6 +22,9 @@ Stimulus.register('mobile-menu', MobileMenuController)
 
 import PasswordRevealController from 'controllers/password_reveal_controller'
 Stimulus.register('password-reveal', PasswordRevealController)
+
+import ResponsiveFormController from 'controllers/responsive_form_controller'
+Stimulus.register('responsive-form', ResponsiveFormController)
 
 import SearchClientsController from 'controllers/search_clients_controller'
 Stimulus.register('search-clients', SearchClientsController)

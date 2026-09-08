@@ -2,11 +2,11 @@
 
 namespace App\Actions\Reports;
 
+use App\Http\Requests\ReportFilterRequest;
 use App\Models\TimeEntry;
 use App\Services\ReportAggregationService;
 use App\ValueObjects\DateRangeFilter;
 use App\ValueObjects\ReportData;
-use Illuminate\Http\Request;
 
 class GenerateReportDataAction
 {
@@ -14,7 +14,7 @@ class GenerateReportDataAction
         protected ReportAggregationService $aggregationService
     ) {}
 
-    public function execute(Request $request): ReportData
+    public function execute(ReportFilterRequest $request): ReportData
     {
         $dateFilter = DateRangeFilter::fromRequest(
             $request->date_range,
@@ -37,10 +37,10 @@ class GenerateReportDataAction
         );
     }
 
-    protected function buildQuery(Request $request, DateRangeFilter $dateFilter)
+    protected function buildQuery(ReportFilterRequest $request, DateRangeFilter $dateFilter)
     {
         return TimeEntry::completed()
-            ->with(['client', 'project'])
+            ->with(['client', 'project.client'])
             ->forClient($request->client_id)
             ->forProject($request->project_id)
             ->betweenDates($dateFilter->startDate, $dateFilter->endDate)

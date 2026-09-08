@@ -6,6 +6,7 @@ namespace Tests\Feature\Http\Controllers\Settings;
 
 use App\Http\Controllers\Settings\DatabaseBackupController;
 use App\Models\User;
+use Illuminate\Support\Facades\Config;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\CoversMethod;
 use PHPUnit\Framework\Attributes\Test;
@@ -27,6 +28,7 @@ final class DatabaseBackupControllerTest extends TestCase
     public function user_can_download_database_backup(): void
     {
         $user = User::factory()->create();
+        Config::set('database.connections.sqlite.database', database_path('template.sqlite'));
 
         $response = $this->actingAs($user)->get(route('settings.database-backup.download'));
 
@@ -38,6 +40,7 @@ final class DatabaseBackupControllerTest extends TestCase
     public function returns_correct_content_type(): void
     {
         $user = User::factory()->create();
+        Config::set('database.connections.sqlite.database', database_path('template.sqlite'));
 
         $response = $this->actingAs($user)->get(route('settings.database-backup.download'));
 
@@ -48,6 +51,7 @@ final class DatabaseBackupControllerTest extends TestCase
     public function filename_contains_timestamp(): void
     {
         $user = User::factory()->create();
+        Config::set('database.connections.sqlite.database', database_path('template.sqlite'));
 
         $response = $this->actingAs($user)->get(route('settings.database-backup.download'));
 

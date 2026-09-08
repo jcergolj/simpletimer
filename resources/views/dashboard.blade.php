@@ -5,9 +5,9 @@
 
         <!-- Stats -->
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-1 lg:gap-6 px-4 sm:px-0">
-            <x-dashboard.weekly-hours />
+            <x-dashboard.weekly-hours :metrics="$weeklyMetrics" />
 
-            <x-dashboard.weekly-earnings />
+            <x-dashboard.weekly-earnings :metrics="$weeklyMetrics" />
         </div>
 
         <!-- Timer Section -->

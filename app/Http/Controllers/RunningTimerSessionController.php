@@ -5,62 +5,68 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreRunningTimerSessionRequest;
 use App\Http\Requests\UpdateRunningTimerSessionRequest;
 use App\Models\TimeEntry;
+use App\Services\TimerStateService;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\View\View;
 use Jcergolj\InAppNotifications\Facades\InAppNotification;
 
 class RunningTimerSessionController extends Controller
 {
-    public function store(StoreRunningTimerSessionRequest $request): RedirectResponse
+    public function store(StoreRunningTimerSessionRequest $request, TimerStateService $timerState): RedirectResponse
     {
-        if (TimeEntry::whereNull('end_time')->first() !== null) {
+        return $timerState->executeWithLock($request, function () use ($request): RedirectResponse {
+            if (TimeEntry::whereNull('end_time')->first() !== null) {
+                return to_route('dashboard');
+            }
+
+            $timeEntry = TimeEntry::create([
+                'start_time' => now(),
+                'client_id' => $request->client_id,
+                'project_id' => $request->project_id,
+            ]);
+
+            Log::channel('time-entries')->info('time-entry-auto-created', $timeEntry->toArray());
+
+            InAppNotification::success(__('Session started.'));
+
             return to_route('dashboard');
-        }
-
-        $timeEntry = TimeEntry::create([
-            'start_time' => now(),
-            'client_id' => $request->client_id,
-            'project_id' => $request->project_id,
-        ]);
-
-        Log::channel('time-entries')->info('time-entry-auto-created', $timeEntry->toArray());
-
-        InAppNotification::success(__('Session started.'));
-
-        return to_route('dashboard');
+        });
     }
 
-    public function update(UpdateRunningTimerSessionRequest $request)
+    public function update(UpdateRunningTimerSessionRequest $request, TimerStateService $timerState): RedirectResponse
     {
-        $runningEntry = TimeEntry::query()
-            ->with(['client', 'project'])
-            ->whereNull('end_time')
-            ->first();
+        return $timerState->executeWithLock($request, function () use ($request): RedirectResponse {
+            $runningEntry = TimeEntry::query()
+                ->with(['client', 'project.client'])
+                ->whereNull('end_time')
+                ->first();
 
-        if (! $runningEntry) {
+            if (! $runningEntry) {
+                return to_route('dashboard');
+            }
+
+            $validated = $request->validated();
+
+            $runningEntry->update([
+                'client_id' => $validated['client_id'] ?? null,
+                'project_id' => $validated['project_id'] ?? null,
+                'start_time' => $validated['start_time'],
+            ]);
+
+            Log::channel('time-entries')->info('timer-session-updated', $runningEntry->toArray());
+
+            InAppNotification::success(__('Session updated.'));
+
             return to_route('dashboard');
-        }
-
-        $validated = $request->validated();
-
-        $runningEntry->update([
-            'client_id' => $validated['client_id'],
-            'project_id' => $validated['project_id'],
-            'start_time' => $validated['start_time'],
-        ]);
-
-        Log::channel('time-entries')->info('timer-session-updated', $runningEntry->toArray());
-
-        InAppNotification::success(__('Session updated.'));
-
-        return to_route('dashboard');
+        });
     }
 
     public function edit(): View|RedirectResponse
     {
         $runningTimer = TimeEntry::query()
-            ->with(['client', 'project'])
+            ->with(['client', 'project.client'])
             ->whereNull('end_time')
             ->first();
 
@@ -71,21 +77,23 @@ class RunningTimerSessionController extends Controller
         return view('turbo::timer-sessions.edit', ['runningTimer' => $runningTimer]);
     }
 
-    public function destroy(): RedirectResponse
+    public function destroy(Request $request, TimerStateService $timerState): RedirectResponse
     {
-        $runningEntry = TimeEntry::query()
-            ->with(['client', 'project'])
-            ->whereNull('end_time')
-            ->first();
+        return $timerState->executeWithLock($request, function (): RedirectResponse {
+            $runningEntry = TimeEntry::query()
+                ->with(['client', 'project.client'])
+                ->whereNull('end_time')
+                ->first();
 
-        if ($runningEntry) {
-            $runningEntry->delete();
+            if ($runningEntry) {
+                $runningEntry->delete();
 
-            Log::channel('time-entries')->info('timer-session-cancelled', $runningEntry->toArray());
-        }
+                Log::channel('time-entries')->info('timer-session-cancelled', $runningEntry->toArray());
+            }
 
-        InAppNotification::success(__('Session deleted.'));
+            InAppNotification::success(__('Session deleted.'));
 
-        return to_route('dashboard');
+            return to_route('dashboard');
+        });
     }
 }

@@ -73,15 +73,30 @@ class TimeEntry extends Model
         return $query->latest('start_time');
     }
 
-    public function getEffectiveHourlyRate(): ?Money
+    public function getEffectiveHourlyRate(?Money $fallbackRate = null): ?Money
     {
-        $user = auth()->user();
+        $projectRate = null;
+        $projectClientRate = null;
+        $clientRate = null;
 
-        // Attributes are loaded directly from JSON - no eager loading needed
+        if ($this->project instanceof Project) {
+            $projectRate = $this->project->hourlyRate;
+
+            if ($this->project->relationLoaded('client')) {
+                $projectClientRate = $this->project->client->hourlyRate;
+            }
+        }
+
+        if ($this->client instanceof Client) {
+            $clientRate = $this->client->hourlyRate;
+        }
+
         return $this->hourlyRate
-            ?? $this->project->hourlyRate
-            ?? $this->client->hourlyRate
-            ?? $user?->hourlyRate;
+            ?? $projectRate
+            ?? $projectClientRate
+            ?? $clientRate
+            ?? $fallbackRate
+            ?? auth()->user()?->hourlyRate;
     }
 
     public function calculateEarnings(): ?Money

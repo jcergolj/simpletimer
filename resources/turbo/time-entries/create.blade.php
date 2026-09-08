@@ -47,6 +47,7 @@
             name="end_time"
             value="{{ old('end_time') }}"
             class="w-full px-4 py-4 text-lg border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-gray-900 focus:border-transparent @error('end_time') border-red-500 @enderror"
+            required
           >
           <x-form.error for="end_time" />
         </div>
@@ -54,10 +55,10 @@
 
       <div>
         <label for="hourly_rate_amount" class="block text-base font-medium text-gray-700 mb-3">{{ __('Hourly Rate') }}</label>
-        <x-form.hourly-rate />
+         <x-form.hourly-rate :use-inherited-rate="false" :use-user-default="false" />
         <p class="mt-1 text-sm text-gray-600">{{ __('Leave empty to use project/client rate') }}</p>
-        <x-form.error for="hourly_rate_amount" />
-        <x-form.error for="hourly_rate_currency" />
+         <x-form.error for="hourly_rate.amount" />
+         <x-form.error for="hourly_rate.currency" />
       </div>
 
       <div>

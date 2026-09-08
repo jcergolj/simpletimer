@@ -25,10 +25,14 @@ final readonly class ConnectToUserDatabase
             return $next($request);
         }
 
+        if ($this->tenantDb->isMainDomain($request)) {
+            return $next($request);
+        }
+
         $subdomain = $this->tenantDb->extractSubdomain($request);
 
-        if (! $subdomain || $this->tenantDb->isMainDomain($request)) {
-            return $next($request);
+        if ($subdomain === null) {
+            abort(Response::HTTP_NOT_FOUND);
         }
 
         if ($this->isRegistrationRoute($request)) {
@@ -49,12 +53,6 @@ final readonly class ConnectToUserDatabase
                 'subdomain' => $subdomain,
                 'mainUrl' => $this->urlBuilder->buildMainDomain(),
             ], Response::HTTP_NOT_FOUND);
-        }
-
-        $user = $request->user();
-
-        if ($user && $subdomain !== $user->username) {
-            abort(Response::HTTP_FORBIDDEN, 'Unauthorized access to this subdomain.');
         }
 
         return $next($request);

@@ -74,13 +74,11 @@ class Project extends Model
 
                 return null;
             },
-            set: function (mixed $value): array {
-                return [
-                    'hourly_rate' => $value instanceof Money
-                        ? json_encode($value->toArray())
-                        : null,
-                ];
-            }
+            set: fn (mixed $value): array => [
+                'hourly_rate' => $value instanceof Money
+                    ? json_encode($value->toArray())
+                    : null,
+            ]
         );
     }
 }

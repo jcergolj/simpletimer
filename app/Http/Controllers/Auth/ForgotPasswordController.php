@@ -8,6 +8,7 @@ use App\Models\User;
 use App\Notifications\ResetPasswordNotification;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\URL;
+use Illuminate\Support\Str;
 use Illuminate\View\View;
 use Jcergolj\InAppNotifications\Facades\InAppNotification;
 
@@ -28,10 +29,16 @@ class ForgotPasswordController extends Controller
             return back();
         }
 
+        $token = Str::random(64);
+
+        $user->forceFill([
+            'password_reset_token' => hash('sha256', $token),
+        ])->save();
+
         $resetUrl = URL::temporarySignedRoute(
             'password.reset',
             now()->addHour(),
-            ['email' => $user->email]
+            ['email' => $user->email, 'token' => $token]
         );
 
         $user->notify(new ResetPasswordNotification($resetUrl));

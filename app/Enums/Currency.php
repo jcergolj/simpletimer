@@ -112,6 +112,15 @@ enum Currency: string
         };
     }
 
+    public function minorUnit(): int
+    {
+        return match ($this) {
+            self::JPY, self::KRW, self::VND => 0,
+            self::BHD, self::JOD, self::KWD, self::OMR => 3,
+            default => 2,
+        };
+    }
+
     public function name(): string
     {
         return match ($this) {

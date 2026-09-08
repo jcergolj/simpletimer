@@ -32,7 +32,7 @@
                 <x-list.action-buttons
                     :edit-route="route('clients.edit', $client)"
                     :delete-route="route('clients.destroy', $client)"
-                    :confirm-message="__('Are you sure you want to delete this client?')"
+                     :confirm-message="__('Are you sure you want to delete this client? Its projects and time entries will also be deleted.')"
                 />
             </div>
         </div>

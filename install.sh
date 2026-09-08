@@ -65,9 +65,13 @@ fi
 
 # Step 3: Generate application key
 echo "🔐 Generating application key..."
-if ! php artisan key:generate --ansi --force; then
-    echo "❌ Error: Failed to generate application key"
-    exit 1
+if grep -qE '^APP_KEY=\s*$' .env; then
+    if ! php artisan key:generate --ansi --force --no-interaction; then
+        echo "❌ Error: Failed to generate application key"
+        exit 1
+    fi
+else
+    echo "ℹ️  Application key already exists, skipping..."
 fi
 
 # Step 4: Setup database
@@ -75,6 +79,7 @@ echo "💾 Setting up database..."
 
 # Create database directory if it doesn't exist
 mkdir -p database
+mkdir -p database/db
 
 # Check if SQLite database exists
 if [ ! -f "database/database.sqlite" ]; then
@@ -84,15 +89,20 @@ fi
 
 # Run migrations
 echo "🗃️  Running database migrations..."
-if ! php artisan migrate --force; then
+if ! php artisan migrate --force --no-interaction; then
     echo "❌ Error: Database migration failed"
+    exit 1
+fi
+
+if ! php artisan app:migrate-tenant-databases --no-interaction; then
+    echo "❌ Error: Tenant database migration failed"
     exit 1
 fi
 
 # Step 5: Setup frontend assets (importmap and tailwindcss)
 echo "🎨 Setting up frontend assets..."
-if ! php artisan importmap:install; then
-    echo "❌ Error: Failed to setup importmap"
+if ! php artisan importmap:optimize --no-interaction; then
+    echo "❌ Error: Failed to optimize importmap"
     exit 1
 fi
 
@@ -114,17 +124,17 @@ fi
 
 # Step 6: Optimize application for production
 echo "⚡ Optimizing application..."
-if ! php artisan config:cache; then
+if ! php artisan config:cache --no-interaction; then
     echo "❌ Error: Failed to cache config"
     exit 1
 fi
 
-if ! php artisan route:cache; then
+if ! php artisan route:cache --no-interaction; then
     echo "❌ Error: Failed to cache routes"
     exit 1
 fi
 
-if ! php artisan view:cache; then
+if ! php artisan view:cache --no-interaction; then
     echo "❌ Error: Failed to cache views"
     exit 1
 fi
@@ -141,7 +151,7 @@ if [[ "$OSTYPE" == "linux-gnu"* ]] || [[ "$OSTYPE" == "darwin"* ]]; then
     
     # Set database permissions if it exists
     if [ -f "database/database.sqlite" ]; then
-        chmod 644 database/database.sqlite
+        chmod 640 database/database.sqlite
     fi
     
     echo "✅ Permissions set successfully"

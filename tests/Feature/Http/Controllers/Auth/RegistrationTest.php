@@ -51,6 +51,8 @@ final class RegistrationTest extends TestCase
 
         $response->assertValid()
             ->assertRedirect($expectedRedirect);
+
+        $response->assertSessionHas('tenant', 'testuser');
     }
 
     #[Test]
@@ -72,5 +74,13 @@ final class RegistrationTest extends TestCase
         ]);
 
         $response->assertRedirect('http://simpletimer.test/register');
+    }
+
+    #[Test]
+    public function requests_to_hosts_outside_the_configured_domain_are_rejected(): void
+    {
+        $response = $this->get('http://jcc.attacker.test/dashboard');
+
+        $response->assertNotFound();
     }
 }

@@ -29,7 +29,13 @@ class ResetPasswordController extends Controller
             abort(Response::HTTP_UNAUTHORIZED, __('Invalid request.'));
         }
 
-        $user = User::where('email', $request->email)->first();
+        $signedEmail = (string) $request->query('email');
+
+        if (! hash_equals($signedEmail, (string) $request->input('email'))) {
+            abort(Response::HTTP_UNAUTHORIZED, __('Invalid request.'));
+        }
+
+        $user = User::where('email', $signedEmail)->first();
 
         if (! $user) {
             InAppNotification::error(__('We could not find a user with that email address.'));
@@ -37,8 +43,15 @@ class ResetPasswordController extends Controller
             return back()->withInput($request->only('email'));
         }
 
+        $token = (string) $request->query('token');
+
+        if ($token === '' || ! hash_equals((string) $user->password_reset_token, hash('sha256', $token))) {
+            abort(Response::HTTP_UNAUTHORIZED, __('Invalid request.'));
+        }
+
         $user->forceFill([
             'password' => $request->password,
+            'password_reset_token' => null,
         ])->setRememberToken(Str::random(60));
 
         $user->save();

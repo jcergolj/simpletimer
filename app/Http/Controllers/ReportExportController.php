@@ -3,13 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Actions\Reports\GenerateReportDataAction;
+use App\Http\Requests\ReportFilterRequest;
 use App\Services\CsvExportService;
-use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
 class ReportExportController extends Controller
 {
-    public function __invoke(Request $request, GenerateReportDataAction $generateReportData, CsvExportService $csvExport): Response
+    public function __invoke(ReportFilterRequest $request, GenerateReportDataAction $generateReportData, CsvExportService $csvExport): Response
     {
         $reportData = $generateReportData->execute($request);
 

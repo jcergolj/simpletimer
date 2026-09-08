@@ -5,6 +5,7 @@ namespace App\View\Components\Form;
 use App\Enums\Currency;
 use App\Models\Client;
 use App\Models\Project;
+use App\ValueObjects\Money;
 use Closure;
 use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
@@ -14,6 +15,9 @@ class HourlyRate extends Component
     public function __construct(
         public ?Project $project = null,
         public ?Client $client = null,
+        public ?Money $hourlyRate = null,
+        public bool $useInheritedRate = true,
+        public bool $useUserDefault = true,
     ) {}
 
     protected function determineCurrency(): string
@@ -23,19 +27,23 @@ class HourlyRate extends Component
             return (string) $oldValue;
         }
 
+        if ($this->hourlyRate instanceof Money) {
+            return $this->hourlyRate->currency->value;
+        }
+
         if ($this->project?->hourlyRate) {
             return $this->project->hourlyRate->currency->value;
         }
 
-        if ($this->client?->hourlyRate) {
+        if ($this->useInheritedRate && $this->client?->hourlyRate) {
             return $this->client->hourlyRate->currency->value;
         }
 
-        if ($this->project?->client?->hourlyRate) {
+        if ($this->useInheritedRate && $this->project?->client?->hourlyRate) {
             return $this->project->client->hourlyRate->currency->value;
         }
 
-        if (auth()->check() && auth()->user()->hourlyRate) {
+        if ($this->useUserDefault && auth()->check() && auth()->user()->hourlyRate) {
             return auth()->user()->hourlyRate->currency->value;
         }
 
@@ -48,19 +56,23 @@ class HourlyRate extends Component
             return old('hourly_rate.amount');
         }
 
+        if ($this->hourlyRate instanceof Money) {
+            return $this->hourlyRate->toInputValue();
+        }
+
         if ($this->project?->hourlyRate) {
             return (string) $this->project->hourlyRate->toDecimal();
         }
 
-        if ($this->client?->hourlyRate) {
+        if ($this->useInheritedRate && $this->client?->hourlyRate) {
             return (string) $this->client->hourlyRate->toDecimal();
         }
 
-        if ($this->project?->client?->hourlyRate) {
+        if ($this->useInheritedRate && $this->project?->client?->hourlyRate) {
             return (string) $this->project->client->hourlyRate->toDecimal();
         }
 
-        if (auth()->check() && auth()->user()->hourlyRate) {
+        if ($this->useUserDefault && auth()->check() && auth()->user()->hourlyRate) {
             return (string) auth()->user()->hourlyRate->toDecimal();
         }
 

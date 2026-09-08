@@ -6,7 +6,6 @@ use App\Enums\Currency;
 use App\Models\User;
 use App\ValueObjects\Money;
 use Illuminate\Console\Command;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 
 class CreateUserCommand extends Command
@@ -67,8 +66,6 @@ class CreateUserCommand extends Command
 
         $hourlyRateInput = $this->ask('What is your default hourly rate? (Optional, press Enter to skip)');
 
-        $hourlyRateInput = $this->ask('What is your default hourly rate? (Optional, press Enter to skip)');
-
         /** @var Money|null $hourlyRate */
         $hourlyRate = null;
 
@@ -85,12 +82,10 @@ class CreateUserCommand extends Command
             $user = User::create([
                 'username' => $username,
                 'email' => $email,
-                'password' => Hash::make($password),
+                'password' => $password,
                 'email_verified_at' => now(),
                 'hourly_rate' => $hourlyRate,
             ]);
-
-            $user->load('hourlyRate');
 
             $this->info('User created successfully!');
 

@@ -22,9 +22,7 @@ Route::get('/', fn () => view('welcome'))->name('home');
 
 Route::view('/llms.txt', 'llms');
 
-Route::get('sitemap.xml', function () {
-    return response()->view('sitemap')->header('Content-Type', 'application/xml');
-})->name('sitemap');
+Route::get('sitemap.xml', fn () => response()->view('sitemap')->header('Content-Type', 'application/xml'))->name('sitemap');
 
 Route::get('dashboard', DashboardController::class)
     ->middleware(['auth'])

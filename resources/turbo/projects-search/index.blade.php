@@ -90,8 +90,8 @@
             <div class="label">
                 <span class="label-text-alt text-base-content/50">{{ __('Leave empty to use client\'s default rate') }}</span>
             </div>
-            <x-form.error for="hourly_rate_amount" />
-            <x-form.error for="hourly_rate_amount" />
+             <x-form.error for="hourly_rate.amount" />
+             <x-form.error for="hourly_rate.currency" />
         </div>
 
         <div class="flex justify-end items-center">

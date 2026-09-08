@@ -4,7 +4,6 @@ namespace App\Console\Commands;
 
 use App\Models\User;
 use Illuminate\Console\Command;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 
 class ResetUserPassword extends Command
@@ -73,7 +72,7 @@ class ResetUserPassword extends Command
 
         // Update the password
         $user->update([
-            'password' => Hash::make($password),
+            'password' => $password,
         ]);
 
         $this->components->info("Password successfully reset for user: {$user->username} ({$user->email})");

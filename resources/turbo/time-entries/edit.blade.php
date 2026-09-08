@@ -59,10 +59,11 @@
 
       <div>
         <label for="hourly_rate_amount" class="block text-sm font-medium text-gray-700 mb-2">{{ __('Hourly Rate') }}</label>
-        <x-form.hourly-rate
-          :project="$timeEntry->project"
-          :client="$timeEntry->client"
-        />
+         <x-form.hourly-rate
+           :hourly-rate="$timeEntry->hourlyRate"
+           :use-inherited-rate="false"
+           :use-user-default="false"
+         />
         <p class="mt-1 text-sm text-gray-600">{{ __('Leave empty to use project/client rate') }}</p>
 
         <x-form.error for="hourly_rate.amount" />
@@ -84,11 +85,11 @@
       
       <div class="flex gap-3 justify-end">
         @if ($is_recent)
-            <a href="{{ route('dashboard') }}" class="text-gray-600 hover:text-gray-900 px-6 py-3 font-medium transition-colors inline-flex items-center" data-turbo-frame="recent-entry-{{ $timeEntry->id }}">
+            <a href="{{ route('dashboard') }}" class="text-gray-600 hover:text-gray-900 px-6 py-3 font-medium transition-colors inline-flex items-center" data-turbo-frame="time-entry-{{ $timeEntry->id }}">
             {{ __('Cancel') }}
             </a>
         @else
-            <x-form.button.cancel :href="route('time-entries.index')" turboFrame="time-entry-edit-form">{{ __('Cancel') }}</x-form.button.cancel>
+            <x-form.button.cancel :href="route('time-entries.index')" :turboFrame="'time-entry-'.$timeEntry->id">{{ __('Cancel') }}</x-form.button.cancel>
         @endif
         
         <x-form.button.save text="{{ __('Update Time Entry') }}" />
