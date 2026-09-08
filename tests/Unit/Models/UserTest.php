@@ -35,4 +35,20 @@ final class UserTest extends TestCase
         $this->assertSame('account_uuid', $user->getAuthIdentifierName());
         $this->assertSame($user->account_uuid, $user->getAuthIdentifier());
     }
+
+    #[Test]
+    public function a_deleted_account_session_cannot_authenticate_a_replacement_account(): void
+    {
+        $deletedAccount = User::factory()->create();
+        $sessionIdentity = $deletedAccount->getAuthIdentifier();
+        $deletedAccountId = $deletedAccount->getKey();
+
+        $deletedAccount->delete();
+
+        $replacementAccount = User::factory()->create(['id' => $deletedAccountId]);
+
+        $this->assertSame($deletedAccountId, $replacementAccount->getKey());
+        $this->assertNotSame($sessionIdentity, $replacementAccount->getAuthIdentifier());
+        $this->assertNull(Auth::guard('web')->getProvider()->retrieveById($sessionIdentity));
+    }
 }
