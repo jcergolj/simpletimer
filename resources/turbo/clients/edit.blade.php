@@ -43,7 +43,7 @@
                         <span class="label-text font-semibold">{{ __('Hourly Rate') }}</span>
                         <span class="label-text-alt text-base-content/50">{{ __('Optional') }}</span>
                     </label>
-                 <x-form.hourly-rate :client="$client" :use-inherited-rate="false" :use-user-default="false" />
+                 <x-form.hourly-rate :client="$client" :hourly-rate="$client->hourlyRate" :use-inherited-rate="false" :use-user-default="false" />
                     <x-form.error for="hourly_rate.amount" />
                     <x-form.error for="hourly_rate.currency" />
                 </div>
