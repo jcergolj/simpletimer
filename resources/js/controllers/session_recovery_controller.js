@@ -23,12 +23,12 @@ export default class extends Controller {
 
     connect() {
         this.handleBeforeFetchResponse = this.handleBeforeFetchResponse.bind(this);
+        this.handleBeforeFetchRequest = this.handleBeforeFetchRequest.bind(this);
         this.handleFrameMissing = this.handleFrameMissing.bind(this);
-        this.handleBeforeSubmit = this.handleBeforeSubmit.bind(this);
 
         document.addEventListener("turbo:before-fetch-response", this.handleBeforeFetchResponse);
+        document.addEventListener("turbo:before-fetch-request", this.handleBeforeFetchRequest);
         document.addEventListener("turbo:frame-missing", this.handleFrameMissing);
-        document.addEventListener("turbo:submit-start", this.handleBeforeSubmit);
 
         // Initialize token expiration timestamp on first page load
         if (!this.getTokenExpiration()) {
@@ -41,8 +41,8 @@ export default class extends Controller {
 
     disconnect() {
         document.removeEventListener("turbo:before-fetch-response", this.handleBeforeFetchResponse);
+        document.removeEventListener("turbo:before-fetch-request", this.handleBeforeFetchRequest);
         document.removeEventListener("turbo:frame-missing", this.handleFrameMissing);
-        document.removeEventListener("turbo:submit-start", this.handleBeforeSubmit);
     }
 
     async handleBeforeFetchResponse(event) {
@@ -65,11 +65,9 @@ export default class extends Controller {
         }
     }
 
-    async handleBeforeSubmit(event) {
-        // Only intercept if we have expiration data AND token is expiring soon
+    async handleBeforeFetchRequest(event) {
         const expiresAt = this.getTokenExpiration();
         if (!expiresAt) {
-            // No expiration data - let submission proceed normally
             return;
         }
 
@@ -77,52 +75,41 @@ export default class extends Controller {
         const bufferMs = this.constructor.EXPIRATION_BUFFER * 60 * 1000;
         const timeUntilExpiration = expiresAt - now;
 
-        // Only intercept if token is actually expiring soon
         if (timeUntilExpiration > bufferMs) {
-            // Token is still fresh - let submission proceed
             return;
         }
 
-        // Token is expiring - prevent and refresh
         event.preventDefault();
 
-        const submitter = event.detail.formSubmission.submitter;
-        const formElement = event.detail.formSubmission.formElement;
-
-        // If already refreshing, wait for it
         if (this.isRefreshing) {
             await new Promise((resolve) => {
                 this.pendingRequests.push(resolve);
             });
-            // After refresh, submit normally (don't use click to avoid recursion)
-            formElement.requestSubmit(submitter);
+
+            const token = this.getCsrfToken();
+            if (token) {
+                this.setRequestCsrfToken(event.detail.fetchOptions, token);
+                event.detail.resume();
+            }
+
             return;
         }
 
-        // Refresh token
         this.isRefreshing = true;
         try {
             const newToken = await this.fetchFreshToken();
             if (newToken) {
                 this.updateCsrfToken(newToken);
-
-                // Resolve pending requests
+                this.setRequestCsrfToken(event.detail.fetchOptions, newToken);
                 this.pendingRequests.forEach((resolve) => resolve());
                 this.pendingRequests = [];
-
-                document.querySelectorAll('input[name="_token"]').forEach((csrfInput) => {
-                    csrfInput.value = newToken;
-                });
-
-                // Submit the form
-                formElement.requestSubmit(submitter);
+                event.detail.resume();
             } else {
                 this.redirectToLogin();
             }
         } catch (error) {
-            console.error("Error refreshing token before submit:", error);
-            // Let it fail and handle 419 error
-            formElement.requestSubmit(submitter);
+            console.error("Error refreshing token before request:", error);
+            this.redirectToLogin();
         } finally {
             this.isRefreshing = false;
         }
@@ -165,48 +152,13 @@ export default class extends Controller {
     }
 
     async handle419Error(event) {
-        // Capture the failed request details
-        const failedRequest = this.captureFailedRequest(event);
-
-        // If already refreshing, queue this request
-        if (this.isRefreshing) {
-            return new Promise((resolve) => {
-                this.pendingRequests.push(resolve);
-            });
-        }
-
-        this.isRefreshing = true;
-
         try {
-            // Try to get a fresh CSRF token
             const newToken = await this.fetchFreshToken();
 
             if (newToken) {
-                // User is still authenticated - update token and retry
                 this.updateCsrfToken(newToken);
-
-                // Resolve any pending requests
-                this.pendingRequests.forEach((resolve) => resolve());
-                this.pendingRequests = [];
-
-                // Retry the failed request if it was an AJAX call
-                if (failedRequest && this.isAjaxRequest(failedRequest)) {
-                    await this.retryRequest(failedRequest, newToken);
-                } else {
-                    // Reload the current frame or page to retry with new token
-                    const frame = event.target.closest("turbo-frame");
-                    if (frame) {
-                        frame.reload();
-                    } else {
-                        // For non-frame requests, reload the page
-                        window.location.reload();
-                    }
-                }
+                window.location.reload();
             } else {
-                // User is not authenticated - store failed request and redirect to login
-                if (failedRequest) {
-                    this.storeFailedRequest(failedRequest);
-                }
                 this.redirectToLogin();
             }
         } finally {
@@ -262,158 +214,13 @@ export default class extends Controller {
         window.location.href = "/login";
     }
 
-    captureFailedRequest(event) {
-        try {
-            const fetchOptions = event.detail.fetchOptions;
-            const url = event.detail.url || fetchOptions?.url;
-
-            if (!url) {
-                return null;
-            }
-
-            return {
-                url: url,
-                method: fetchOptions?.method || "GET",
-                headers: Object.fromEntries(new Headers(fetchOptions?.headers || {}).entries()),
-                body: this.serializeBody(fetchOptions?.body),
-            };
-        } catch (error) {
-            console.error("Error capturing failed request:", error);
-            return null;
-        }
+    setRequestCsrfToken(fetchOptions, token) {
+        const headers = new Headers(fetchOptions.headers || {});
+        headers.set("X-CSRF-TOKEN", token);
+        fetchOptions.headers = headers;
     }
 
-    isAjaxRequest(request) {
-        // Check if it's an AJAX request based on headers or method
-        const headers = request.headers || {};
-        const isXHR = (headers["x-requested-with"] || headers["X-Requested-With"]) === "XMLHttpRequest";
-        const isJSON = (headers["accept"] || headers["Accept"])?.includes("application/json");
-        const isNotGetOrHead = !["GET", "HEAD"].includes(request.method);
-
-        return isXHR || isJSON || isNotGetOrHead;
-    }
-
-    serializeBody(body) {
-        if (body instanceof FormData) {
-            return {
-                type: "form-data",
-                entries: Array.from(body.entries()).map(([name, value]) => [name, String(value)]),
-            };
-        }
-
-        if (body instanceof URLSearchParams) {
-            return {
-                type: "url-search-params",
-                value: body.toString(),
-            };
-        }
-
-        return typeof body === "string" ? { type: "text", value: body } : null;
-    }
-
-    deserializeBody(body) {
-        if (!body) {
-            return undefined;
-        }
-
-        if (body.type === "form-data") {
-            const formData = new FormData();
-            body.entries.forEach(([name, value]) => formData.append(name, value));
-            return formData;
-        }
-
-        if (body.type === "url-search-params") {
-            return new URLSearchParams(body.value);
-        }
-
-        return body.type === "text" ? body.value : undefined;
-    }
-
-    storeFailedRequest(request) {
-        try {
-            sessionStorage.setItem("failed_request", JSON.stringify(request));
-        } catch (error) {
-            console.error("Error storing failed request:", error);
-        }
-    }
-
-    async retryRequest(request, token) {
-        try {
-            // Update CSRF token in headers
-            const headers = { ...request.headers };
-            headers["X-CSRF-TOKEN"] = token;
-
-            if (["GET", "HEAD"].includes(request.method)) {
-                window.location.assign(request.url);
-
-                return;
-            }
-
-            const response = await fetch(request.url, {
-                method: request.method,
-                headers: headers,
-                body: this.deserializeBody(request.body),
-                credentials: "same-origin",
-            });
-
-            if (response.ok) {
-                console.log("Failed request successfully retried");
-                // Handle response based on content type
-                const contentType = response.headers.get("content-type");
-                if (contentType?.includes("application/json")) {
-                    const data = await response.json();
-                    // Dispatch custom event with response data
-                    document.dispatchEvent(
-                        new CustomEvent("session-recovery:request-retried", {
-                            detail: { response: data, originalRequest: request },
-                        })
-                    );
-                } else {
-                    // For non-JSON responses, reload the page
-                    window.location.reload();
-                }
-            } else {
-                console.error("Failed to retry request:", response.status);
-                window.location.reload();
-            }
-        } catch (error) {
-            console.error("Error retrying request:", error);
-            window.location.reload();
-        }
-    }
-
-    async retryFailedRequestIfPresent() {
-        try {
-            const storedRequest = sessionStorage.getItem("failed_request");
-            if (!storedRequest) {
-                const intendedUrl = sessionStorage.getItem("intended_url");
-
-                if (intendedUrl && new URL(intendedUrl, window.location.origin).origin === window.location.origin) {
-                    sessionStorage.removeItem("intended_url");
-                    window.location.replace(intendedUrl);
-                }
-
-                return;
-            }
-
-            // Clear the stored request
-            sessionStorage.removeItem("failed_request");
-            sessionStorage.removeItem("intended_url");
-
-            const request = JSON.parse(storedRequest);
-
-            // Get fresh CSRF token
-            const token = document.querySelector('meta[name="csrf-token"]')?.getAttribute("content");
-
-            if (token && request) {
-                // Small delay to ensure page is fully loaded
-                setTimeout(() => {
-                    this.retryRequest(request, token);
-                }, 100);
-            }
-        } catch (error) {
-            console.error("Error retrying failed request:", error);
-            sessionStorage.removeItem("failed_request");
-        }
+    getCsrfToken() {
+        return document.querySelector('meta[name="csrf-token"]')?.getAttribute("content") || null;
     }
 }
