@@ -51,4 +51,24 @@ final class UserTest extends TestCase
         $this->assertNotSame($sessionIdentity, $replacementAccount->getAuthIdentifier());
         $this->assertNull(Auth::guard('web')->getProvider()->retrieveById($sessionIdentity));
     }
+
+    #[Test]
+    public function repeated_logins_work_after_automatic_password_rehash(): void
+    {
+        $user = User::factory()->create([
+            'password' => Hash::make('password', ['rounds' => 4]),
+        ]);
+
+        $this->assertTrue(Auth::attempt([
+            'email' => $user->email,
+            'password' => 'password',
+        ]));
+
+        Auth::logout();
+
+        $this->assertTrue(Auth::attempt([
+            'email' => $user->email,
+            'password' => 'password',
+        ]));
+    }
 }
