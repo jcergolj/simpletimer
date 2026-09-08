@@ -8,7 +8,6 @@ use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 
 /**
@@ -43,14 +42,8 @@ class User extends Authenticatable
         return [
             'id' => 'integer',
             'email_verified_at' => 'datetime',
+            'password' => 'hashed',
         ];
-    }
-
-    protected function password(): Attribute
-    {
-        return Attribute::make(
-            set: fn (string $value): string => Hash::make($value)
-        );
     }
 
     protected function hourlyRate(): Attribute
