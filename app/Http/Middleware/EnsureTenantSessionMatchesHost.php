@@ -41,12 +41,21 @@ final readonly class EnsureTenantSessionMatchesHost
         $user = $request->user();
         $sessionAccountUuid = $request->session()->get(TenantDatabaseService::ACCOUNT_SESSION_KEY);
 
-        if ($sessionTenant !== $subdomain && ($user || $sessionTenant !== null)) {
+        if ($sessionTenant !== null && $sessionTenant !== $subdomain) {
             abort(Response::HTTP_FORBIDDEN, 'Unauthorized access to this subdomain.');
         }
 
-        if ($user && (! is_string($sessionAccountUuid) || ! is_string($user->account_uuid) || ! hash_equals($user->account_uuid, $sessionAccountUuid))) {
-            abort(Response::HTTP_FORBIDDEN, 'Unauthorized access to this tenant.');
+        if ($user) {
+            if (! is_string($user->account_uuid)
+                || ($sessionAccountUuid !== null
+                    && (! is_string($sessionAccountUuid) || ! hash_equals($user->account_uuid, $sessionAccountUuid)))) {
+                abort(Response::HTTP_FORBIDDEN, 'Unauthorized access to this tenant.');
+            }
+
+            $request->session()->put([
+                TenantDatabaseService::SESSION_KEY => $subdomain,
+                TenantDatabaseService::ACCOUNT_SESSION_KEY => $user->account_uuid,
+            ]);
         }
 
         return $next($request);

@@ -76,6 +76,25 @@ final class EnsureTenantSessionMatchesHostTest extends TestCase
     }
 
     #[Test]
+    public function a_remembered_user_session_is_bound_to_the_current_tenant(): void
+    {
+        $request = Request::create('https://alice.simpletimer.test/dashboard');
+        $session = new Store('test', new ArraySessionHandler(120));
+        $session->start();
+        $request->setLaravelSession($session);
+
+        $user = new User;
+        $user->setRawAttributes(['account_uuid' => 'alice-account']);
+        $request->setUserResolver(fn (): User => $user);
+
+        $response = app(EnsureTenantSessionMatchesHost::class)->handle($request, fn (): mixed => response('ok'));
+
+        $this->assertSame(200, $response->getStatusCode());
+        $this->assertSame('alice', $session->get('tenant'));
+        $this->assertSame('alice-account', $session->get('tenant_account_uuid'));
+    }
+
+    #[Test]
     public function tenant_session_validation_is_skipped_in_single_user_mode(): void
     {
         Config::set('app.single_user_mode', true);
