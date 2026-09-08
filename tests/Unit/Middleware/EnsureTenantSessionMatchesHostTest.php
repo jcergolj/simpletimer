@@ -49,6 +49,17 @@ final class EnsureTenantSessionMatchesHostTest extends TestCase
     }
 
     #[Test]
+    public function a_tenant_session_cannot_access_the_main_domain(): void
+    {
+        $request = $this->requestWithTenant('simpletimer.test', 'alice');
+
+        $this->expectException(HttpException::class);
+        $this->expectExceptionMessage('Unauthorized access to the main domain.');
+
+        app(EnsureTenantSessionMatchesHost::class)->handle($request, fn (): mixed => response('ok'));
+    }
+
+    #[Test]
     public function tenant_session_validation_is_skipped_in_single_user_mode(): void
     {
         Config::set('app.single_user_mode', true);

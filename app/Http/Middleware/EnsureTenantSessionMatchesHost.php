@@ -18,7 +18,17 @@ final readonly class EnsureTenantSessionMatchesHost
 
     public function handle(Request $request, Closure $next): Response
     {
-        if (Config::get('app.single_user_mode') || $this->tenantDb->isMainDomain($request)) {
+        if (Config::get('app.single_user_mode')) {
+            return $next($request);
+        }
+
+        $sessionTenant = $request->session()->get(TenantDatabaseService::SESSION_KEY);
+
+        if ($this->tenantDb->isMainDomain($request)) {
+            if ($sessionTenant !== null) {
+                abort(Response::HTTP_FORBIDDEN, 'Unauthorized access to the main domain.');
+            }
+
             return $next($request);
         }
 
@@ -29,7 +39,6 @@ final readonly class EnsureTenantSessionMatchesHost
         }
 
         $user = $request->user();
-        $sessionTenant = $request->session()->get(TenantDatabaseService::SESSION_KEY);
 
         if ($sessionTenant !== $subdomain && ($user || $sessionTenant !== null)) {
             abort(Response::HTTP_FORBIDDEN, 'Unauthorized access to this subdomain.');
