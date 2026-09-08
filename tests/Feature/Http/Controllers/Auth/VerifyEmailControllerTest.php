@@ -11,6 +11,7 @@ use Illuminate\Auth\Notifications\VerifyEmail;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\URL;
+use Illuminate\Support\Str;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
@@ -57,7 +58,7 @@ final class VerifyEmailControllerTest extends TestCase
     {
         Notification::fake();
 
-        $user = User::factory()->unverified()->create();
+        $user = User::factory()->unverified()->create(['account_uuid' => (string) Str::uuid()]);
 
         $response = $this->actingAs($user)
             ->from(route('verification.notice'))
@@ -109,7 +110,7 @@ final class VerifyEmailControllerTest extends TestCase
     {
         Event::fake();
 
-        $user = User::factory()->unverified()->create();
+        $user = User::factory()->unverified()->create(['account_uuid' => (string) Str::uuid()]);
 
         $url = URL::temporarySignedRoute(
             'verification.verify',
