@@ -23,12 +23,16 @@ class MigrateTenantDatabases extends Command
             $tenantDb->validateSubdomain($subdomain);
             $tenantDb->connectToTenant($subdomain);
 
-            $this->call('migrate', [
+            $migrationResult = $this->call('migrate', [
                 '--database' => 'tenant',
                 '--path' => 'database/migrations',
                 '--force' => true,
                 '--no-interaction' => true,
             ]);
+
+            if ($migrationResult !== self::SUCCESS) {
+                return self::FAILURE;
+            }
         }
 
         $this->components->info(sprintf('Migrated %d tenant database(s).', count($databasePaths)));

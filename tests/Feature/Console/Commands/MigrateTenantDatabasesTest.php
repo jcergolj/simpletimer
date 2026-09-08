@@ -39,4 +39,24 @@ final class MigrateTenantDatabasesTest extends TestCase
         $this->assertSame(Command::SUCCESS, $command->run(new ArrayInput([]), new NullOutput));
         $this->assertTrue($command->usedRelativePath);
     }
+
+    #[Test]
+    public function a_tenant_migration_failure_is_returned_by_the_command(): void
+    {
+        File::shouldReceive('glob')
+            ->once()
+            ->with(database_path('db/*.sqlite'))
+            ->andReturn([database_path('db/alice.sqlite')]);
+
+        $command = new class extends MigrateTenantDatabases
+        {
+            public function call($command, array $arguments = []): int
+            {
+                return Command::FAILURE;
+            }
+        };
+        $command->setLaravel($this->app);
+
+        $this->assertSame(Command::FAILURE, $command->run(new ArrayInput([]), new NullOutput));
+    }
 }
