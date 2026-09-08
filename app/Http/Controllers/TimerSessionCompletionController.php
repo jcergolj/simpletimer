@@ -16,7 +16,8 @@ class TimerSessionCompletionController extends Controller
         return $timerState->executeWithLock($request, function () use ($request, $timerState): RedirectResponse {
             $runningEntry = $timerState->getRunningTimer();
 
-            if (! $runningEntry instanceof TimeEntry) {
+            if (! $runningEntry instanceof TimeEntry
+                || (string) $request->input('time_entry_id') !== (string) $runningEntry->getKey()) {
                 return to_route('dashboard');
             }
 

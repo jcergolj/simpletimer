@@ -38,16 +38,16 @@ class RunningTimerSessionController extends Controller
     public function update(UpdateRunningTimerSessionRequest $request, TimerStateService $timerState): RedirectResponse
     {
         return $timerState->executeWithLock($request, function () use ($request): RedirectResponse {
+            $validated = $request->validated();
             $runningEntry = TimeEntry::query()
                 ->with(['client', 'project.client'])
                 ->whereNull('end_time')
+                ->whereKey($validated['time_entry_id'])
                 ->first();
 
             if (! $runningEntry) {
                 return to_route('dashboard');
             }
-
-            $validated = $request->validated();
 
             $runningEntry->update([
                 'client_id' => $validated['client_id'] ?? null,
@@ -79,13 +79,13 @@ class RunningTimerSessionController extends Controller
 
     public function destroy(Request $request, TimerStateService $timerState): RedirectResponse
     {
-        return $timerState->executeWithLock($request, function (): RedirectResponse {
+        return $timerState->executeWithLock($request, function () use ($request): RedirectResponse {
             $runningEntry = TimeEntry::query()
                 ->with(['client', 'project.client'])
                 ->whereNull('end_time')
                 ->first();
 
-            if ($runningEntry) {
+            if ($runningEntry && (string) $request->input('time_entry_id') === (string) $runningEntry->getKey()) {
                 $runningEntry->delete();
 
                 Log::channel('time-entries')->info('timer-session-cancelled', $runningEntry->toArray());

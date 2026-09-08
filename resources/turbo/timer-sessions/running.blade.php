@@ -8,7 +8,7 @@
             <div>
                 <!-- Top Controls: Edit (left) and Cancel (right) -->
                 <div class="flex justify-between items-start -mt-4 -mx-4 lg:-mt-5 lg:-mx-6 mb-1.5 lg:mb-2">
-                    <a href="{{ route('running-timer-session.edit') }}"
+                    <a href="{{ route('running-timer-session.edit', ['time_entry_id' => $runningTimer->id]) }}"
                        data-turbo-frame="timer-widget"
                        class="btn-action-edit px-4 py-2 rounded-lg inline-flex items-center"
                        title="{{ __('Edit Timer') }}">
@@ -18,6 +18,7 @@
                     <form action="{{ route('running-timer-session.destroy') }}" method="POST" class="inline" data-turbo-frame="_top">
                         @csrf
                         @method('DELETE')
+                        <input type="hidden" name="time_entry_id" value="{{ $runningTimer->id }}">
                         <button type="submit"
                                 class="btn-timer-cancel px-4 py-2 rounded-lg inline-flex items-center"
                                 data-keyboard-shortcuts-target="cancelButton"
@@ -68,7 +69,7 @@
 
             <!-- Bottom Action: Stop Button (Centered) -->
             <div class="flex justify-center pt-2 lg:pt-3">
-                <a href="{{ route('running-timer-session.completion') }}"
+                <a href="{{ route('running-timer-session.completion', ['time_entry_id' => $runningTimer->id]) }}"
                    data-turbo-method="post"
                    data-turbo-frame="_top"
                    class="btn-timer-stop px-4 lg:px-6 py-2 lg:py-2.5 rounded-lg inline-flex items-center justify-center gap-2"

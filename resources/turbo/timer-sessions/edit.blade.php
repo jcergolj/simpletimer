@@ -20,6 +20,7 @@
             <form action="{{ route('running-timer-session.update') }}" method="POST" data-turbo-frame="_top" class="space-y-2 lg:space-y-3">
                 @csrf
                 @method('PUT')
+                <input type="hidden" name="time_entry_id" value="{{ $runningTimer->id }}">
 
                 <!-- Client, Project, and Start Time Row -->
                 <div class="grid grid-cols-1 lg:grid-cols-3 gap-2 lg:gap-3">
