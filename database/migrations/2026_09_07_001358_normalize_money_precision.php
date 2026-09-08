@@ -10,6 +10,20 @@ return new class extends Migration
 {
     public function up(): void
     {
+        $this->convertAmounts(function (Currency $currency, float $amount): int {
+            return (int) round(($amount / 100) * (10 ** $currency->minorUnit()));
+        });
+    }
+
+    public function down(): void
+    {
+        $this->convertAmounts(function (Currency $currency, float $amount): int {
+            return (int) round(($amount / (10 ** $currency->minorUnit())) * 100);
+        });
+    }
+
+    private function convertAmounts(Closure $converter): void
+    {
         foreach (['users', 'clients', 'projects', 'time_entries'] as $table) {
             $rows = DB::table($table)
                 ->whereNotNull('hourly_rate')
@@ -23,7 +37,7 @@ return new class extends Migration
                     continue;
                 }
 
-                $data['amount'] = (int) round(((float) $data['amount'] / 100) * (10 ** $currency->minorUnit()));
+                $data['amount'] = $converter($currency, (float) $data['amount']);
 
                 DB::table($table)
                     ->where('id', $row->id)
