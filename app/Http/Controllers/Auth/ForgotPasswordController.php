@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\ForgotPasswordRequest;
 use App\Models\User;
 use App\Notifications\ResetPasswordNotification;
+use App\Services\SubdomainUrlBuilder;
+use App\Services\TenantDatabaseService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Str;
@@ -19,8 +21,11 @@ class ForgotPasswordController extends Controller
         return view('auth.forgot-password');
     }
 
-    public function store(ForgotPasswordRequest $request): RedirectResponse
-    {
+    public function store(
+        ForgotPasswordRequest $request,
+        SubdomainUrlBuilder $urlBuilder,
+        TenantDatabaseService $tenantDb
+    ): RedirectResponse {
         $user = User::where('email', $request->email)->first();
 
         if (! $user) {
@@ -35,11 +40,22 @@ class ForgotPasswordController extends Controller
             'password_reset_token' => hash('sha256', $token),
         ])->save();
 
-        $resetUrl = URL::temporarySignedRoute(
-            'password.reset',
-            now()->addHour(),
-            ['email' => $user->email, 'token' => $token]
-        );
+        $subdomain = $tenantDb->extractSubdomain($request);
+        $origin = $subdomain === null
+            ? $urlBuilder->buildMainDomain()
+            : $urlBuilder->build($subdomain);
+
+        URL::useOrigin($origin);
+
+        try {
+            $resetUrl = URL::temporarySignedRoute(
+                'password.reset',
+                now()->addHour(),
+                ['email' => $user->email, 'token' => $token]
+            );
+        } finally {
+            URL::useOrigin(null);
+        }
 
         $user->notify(new ResetPasswordNotification($resetUrl));
 

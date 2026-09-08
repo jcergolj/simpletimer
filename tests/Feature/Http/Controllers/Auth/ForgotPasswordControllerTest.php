@@ -8,6 +8,7 @@ use App\Http\Controllers\Auth\ForgotPasswordController;
 use App\Http\Requests\Auth\ForgotPasswordRequest;
 use App\Models\User;
 use App\Notifications\ResetPasswordNotification;
+use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Notification;
 use Jcergolj\FormRequestAssertions\TestableFormRequest;
 use PHPUnit\Framework\Attributes\CoversClass;
@@ -75,6 +76,31 @@ final class ForgotPasswordControllerTest extends TestCase
             ->assertRedirect(route('password.request'));
 
         Notification::assertSentTo($user, ResetPasswordNotification::class);
+    }
+
+    #[Test]
+    public function reset_links_use_the_configured_origin_for_untrusted_hosts(): void
+    {
+        Config::set([
+            'app.single_user_mode' => true,
+            'app.url' => 'https://trusted.simpletimer.test',
+        ]);
+        Notification::fake();
+
+        $user = User::factory()->create();
+
+        $this->post('https://attacker.test/forgot-password', [
+            'email' => $user->email,
+        ]);
+
+        Notification::assertSentTo($user, ResetPasswordNotification::class);
+
+        $notification = Notification::sent($user, ResetPasswordNotification::class)->first();
+
+        $this->assertSame(
+            'trusted.simpletimer.test',
+            parse_url($notification->toMail($user)->actionUrl, PHP_URL_HOST)
+        );
     }
 
     #[Test]
