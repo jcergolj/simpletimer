@@ -65,6 +65,7 @@ final class RegistrationController extends Controller
 
         Auth::login($user);
         Session::put(TenantDatabaseService::SESSION_KEY, $subdomain);
+        Session::put(TenantDatabaseService::ACCOUNT_SESSION_KEY, $user->account_uuid);
 
         return redirect($urlBuilder->build($subdomain, '/dashboard'));
     }

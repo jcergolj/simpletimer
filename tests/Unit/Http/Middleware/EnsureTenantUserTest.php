@@ -49,6 +49,7 @@ final class EnsureTenantUserTest extends TestCase
         $request->setLaravelSession(app('session.store'));
         $request->setUserResolver(fn (): User => $user);
         $request->session()->put(TenantDatabaseService::SESSION_KEY, 'alice');
+        $request->session()->put(TenantDatabaseService::ACCOUNT_SESSION_KEY, $user->account_uuid);
 
         $response = app(EnsureTenantSessionMatchesHost::class)->handle(
             $request,

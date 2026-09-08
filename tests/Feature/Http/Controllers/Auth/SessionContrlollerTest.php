@@ -83,7 +83,8 @@ final class SessionContrlollerTest extends TestCase
 
         $response->assertValid()
             ->assertRedirect(route('dashboard', absolute: false))
-            ->assertSessionHas('tenant', 'alice');
+            ->assertSessionHas('tenant', 'alice')
+            ->assertSessionHas('tenant_account_uuid', $user->account_uuid);
     }
 
     #[Test]

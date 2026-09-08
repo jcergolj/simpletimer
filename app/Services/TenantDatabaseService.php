@@ -18,6 +18,8 @@ final readonly class TenantDatabaseService
 {
     public const string SESSION_KEY = 'tenant';
 
+    public const string ACCOUNT_SESSION_KEY = 'tenant_account_uuid';
+
     public function extractSubdomain(Request $request): ?string
     {
         $host = strtolower($request->getHost());

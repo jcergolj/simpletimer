@@ -14,10 +14,18 @@ use Illuminate\Support\Str;
 /**
  * @property Money|null $hourlyRate
  * @property DateTimeFormatter $preferences
+ * @property string $account_uuid
  */
 class User extends Authenticatable
 {
     use HasFactory, Notifiable;
+
+    protected static function booted(): void
+    {
+        static::creating(function (User $user): void {
+            $user->account_uuid ??= (string) Str::uuid();
+        });
+    }
 
     protected $hidden = [
         'password',

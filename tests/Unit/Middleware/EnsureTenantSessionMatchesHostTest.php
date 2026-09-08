@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Tests\Unit\Middleware;
 
 use App\Http\Middleware\EnsureTenantSessionMatchesHost;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Session\ArraySessionHandler;
 use Illuminate\Session\Store;
@@ -55,6 +56,21 @@ final class EnsureTenantSessionMatchesHostTest extends TestCase
 
         $this->expectException(HttpException::class);
         $this->expectExceptionMessage('Unauthorized access to the main domain.');
+
+        app(EnsureTenantSessionMatchesHost::class)->handle($request, fn (): mixed => response('ok'));
+    }
+
+    #[Test]
+    public function a_session_for_a_previous_account_cannot_access_a_replacement_account(): void
+    {
+        $request = $this->requestWithTenant('alice.simpletimer.test', 'alice');
+        $user = new User;
+        $user->setRawAttributes(['account_uuid' => 'replacement-account']);
+        $request->setUserResolver(fn (): User => $user);
+        $request->session()->put('tenant_account_uuid', 'previous-account');
+
+        $this->expectException(HttpException::class);
+        $this->expectExceptionMessage('Unauthorized access to this tenant.');
 
         app(EnsureTenantSessionMatchesHost::class)->handle($request, fn (): mixed => response('ok'));
     }
