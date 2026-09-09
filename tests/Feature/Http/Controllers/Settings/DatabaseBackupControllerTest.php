@@ -74,7 +74,6 @@ final class DatabaseBackupControllerTest extends TestCase
         $pdo->exec('PRAGMA journal_mode = WAL');
         $pdo->exec('CREATE TABLE snapshot_data (value TEXT NOT NULL)');
         $pdo->exec("INSERT INTO snapshot_data (value) VALUES ('committed in wal')");
-        $pdo = null;
 
         Config::set('database.connections.sqlite.database', $databasePath);
 

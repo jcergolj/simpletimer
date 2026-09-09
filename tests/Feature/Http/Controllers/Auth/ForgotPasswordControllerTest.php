@@ -99,7 +99,7 @@ final class ForgotPasswordControllerTest extends TestCase
 
         $this->assertSame(
             'trusted.simpletimer.test',
-            parse_url($notification->toMail($user)->actionUrl, PHP_URL_HOST)
+            parse_url((string) $notification->toMail($user)->actionUrl, PHP_URL_HOST)
         );
     }
 

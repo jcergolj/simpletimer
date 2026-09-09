@@ -36,11 +36,11 @@ final class DateRangeFilterTest extends TestCase
     #[Test]
     public function last_month_returns_the_previous_calendar_month_at_month_end(): void
     {
-        Carbon::setTestNow('2026-03-31 12:00:00');
+        $this->travelTo('2026-03-31 12:00:00');
 
         $filter = DateRangeFilter::fromPeriod('last_month');
 
-        Carbon::setTestNow();
+        $this->travelTo(null);
 
         $this->assertSame('2026-02-01', $filter->startDate?->toDateString());
         $this->assertSame('2026-02-28', $filter->endDate?->toDateString());
@@ -49,11 +49,11 @@ final class DateRangeFilterTest extends TestCase
     #[Test]
     public function last_month_includes_leap_day_when_the_previous_year_is_a_leap_year(): void
     {
-        Carbon::setTestNow('2024-03-31 12:00:00');
+        $this->travelTo('2024-03-31 12:00:00');
 
         $filter = DateRangeFilter::fromPeriod('last_month');
 
-        Carbon::setTestNow();
+        $this->travelTo(null);
 
         $this->assertSame('2024-02-01', $filter->startDate?->toDateString());
         $this->assertSame('2024-02-29', $filter->endDate?->toDateString());
