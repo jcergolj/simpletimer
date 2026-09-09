@@ -35,8 +35,6 @@ export default class extends Controller {
             this.updateTokenExpiration();
         }
 
-        // Check if there's a failed request to retry after login redirect
-        this.retryFailedRequestIfPresent();
     }
 
     disconnect() {

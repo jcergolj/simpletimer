@@ -19,6 +19,10 @@ function loadController() {
         Date,
         Promise,
         setTimeout,
+        document: {
+            addEventListener: () => {},
+            removeEventListener: () => {},
+        },
     };
 
     vm.runInNewContext(script, context);
@@ -53,4 +57,14 @@ test("pauses an expiring Turbo request and resumes it with a fresh CSRF token", 
     assert.equal(prevented, true);
     assert.equal(resumed, true);
     assert.equal(new Headers(event.detail.fetchOptions.headers).get("X-CSRF-TOKEN"), "fresh-token");
+});
+
+test("connects without attempting to replay a failed request", () => {
+    const SessionRecoveryController = loadController();
+    const controller = new SessionRecoveryController();
+
+    controller.getTokenExpiration = () => Date.now();
+    controller.updateTokenExpiration = () => {};
+
+    assert.doesNotThrow(() => controller.connect());
 });
