@@ -57,9 +57,17 @@ class SessionsController extends Controller
 
             if ($subdomain !== null) {
                 $request->session()->put(TenantDatabaseService::SESSION_KEY, $subdomain);
+
+                $accountUuid = $request->user()->getAttributes()['account_uuid'] ?? null;
+
+                if ($accountUuid === null) {
+                    $accountUuid = (string) Str::uuid();
+                    $request->user()->forceFill(['account_uuid' => $accountUuid])->save();
+                }
+
                 $request->session()->put(
                     TenantDatabaseService::ACCOUNT_SESSION_KEY,
-                    $request->user()->account_uuid
+                    $accountUuid
                 );
             }
         }

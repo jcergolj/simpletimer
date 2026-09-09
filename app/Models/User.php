@@ -42,6 +42,11 @@ class User extends Authenticatable
         return 'account_uuid';
     }
 
+    public function getAuthIdentifier(): mixed
+    {
+        return $this->attributes['account_uuid'] ?? $this->attributes['id'];
+    }
+
     protected function casts(): array
     {
         return [

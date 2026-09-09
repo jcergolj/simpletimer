@@ -46,15 +46,20 @@ final readonly class EnsureTenantSessionMatchesHost
         }
 
         if ($user) {
-            if (! is_string($user->account_uuid)
-                || ($sessionAccountUuid !== null
-                    && (! is_string($sessionAccountUuid) || ! hash_equals($user->account_uuid, $sessionAccountUuid)))) {
+            $accountUuid = $user->account_uuid;
+
+            if (! is_string($accountUuid) || $accountUuid === '') {
+                abort(Response::HTTP_FORBIDDEN, 'User account is not properly configured.');
+            }
+
+            if ($sessionAccountUuid !== null
+                && (! is_string($sessionAccountUuid) || ! hash_equals($accountUuid, $sessionAccountUuid))) {
                 abort(Response::HTTP_FORBIDDEN, 'Unauthorized access to this tenant.');
             }
 
             $request->session()->put([
                 TenantDatabaseService::SESSION_KEY => $subdomain,
-                TenantDatabaseService::ACCOUNT_SESSION_KEY => $user->account_uuid,
+                TenantDatabaseService::ACCOUNT_SESSION_KEY => $accountUuid,
             ]);
         }
 

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use App\Http\Controllers\ClientController;
 use App\Http\Controllers\ClientSearchController;
 use App\Http\Controllers\DashboardController;
