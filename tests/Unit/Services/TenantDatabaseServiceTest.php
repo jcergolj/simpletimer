@@ -25,34 +25,34 @@ final class TenantDatabaseServiceTest extends TestCase
     }
 
     #[Test]
-    public function main_domain_has_no_subdomain(): void
+    public function main_domain_has_no_subdomain(Request $request): void
     {
         $subdomain = $this->tenantDatabase->extractSubdomain(
-            Request::create('http://simpletimer.test')
+            $request->create('http://simpletimer.test')
         );
 
         $this->assertNull($subdomain);
     }
 
     #[Test]
-    public function valid_tenant_host_returns_its_single_subdomain(): void
+    public function valid_tenant_host_returns_its_single_subdomain(Request $request): void
     {
         $subdomain = $this->tenantDatabase->extractSubdomain(
-            Request::create('http://alice.simpletimer.test')
+            $request->create('http://alice.simpletimer.test')
         );
 
         $this->assertSame('alice', $subdomain);
     }
 
     #[Test]
-    public function unrelated_and_nested_hosts_are_not_tenants(): void
+    public function unrelated_and_nested_hosts_are_not_tenants(Request $request): void
     {
         $unrelatedHost = $this->tenantDatabase->extractSubdomain(
-            Request::create('http://alice.attacker.test')
+            $request->create('http://alice.attacker.test')
         );
 
         $nestedHost = $this->tenantDatabase->extractSubdomain(
-            Request::create('http://team.alice.simpletimer.test')
+            $request->create('http://team.alice.simpletimer.test')
         );
 
         $this->assertNull($unrelatedHost);
