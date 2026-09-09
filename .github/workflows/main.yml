@@ -5,6 +5,7 @@ jobs:
   code-formatter:
     name: "code formatter"
     uses: jcergolj/reusable-github-actions/.github/workflows/code-formatter.yml@master
+    secrets: inherit
     with:
       skip-npm: true
 
