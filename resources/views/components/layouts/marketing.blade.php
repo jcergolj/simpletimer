@@ -37,7 +37,7 @@
                     @auth
                         <a href="{{ route('dashboard') }}" class="btn-primary px-6 py-2.5 rounded-xl text-sm">{{ __('Dashboard') }}</a>
                     @else
-                        <a href="{{ route('register') }}" class="btn-primary px-6 py-2.5 rounded-xl text-sm">{{ __('Try SimpleTimer') }}</a>
+                        <a href="{{ route('register') }}" class="btn-primary px-4 py-2.5 rounded-xl text-xs sm:px-6 sm:text-sm">{{ __('Try SimpleTimer') }}</a>
                     @endauth
                 </div>
             </div>
