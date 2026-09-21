@@ -39,6 +39,11 @@ final class MarketingPagesTest extends TestCase
                 'Project Time Tracking with Clients, Rates and Reports | SimpleTimer',
                 'See the time and value behind each project',
             ],
+            'virtual assistants' => [
+                'marketing.time-tracker-for-virtual-assistants',
+                'Time Tracking for Virtual Assistants | SimpleTimer',
+                'Time tracking for virtual assistants with multiple direct clients',
+            ],
         ];
     }
 
@@ -72,6 +77,23 @@ final class MarketingPagesTest extends TestCase
             ->assertSee('An app that tracks time, not you.');
 
         $this->assertSame(1, substr_count($response->getContent(), '<h1'));
+    }
+
+    #[Test]
+    public function virtual_assistant_page_qualifies_visitors_and_exposes_measurement_ctas(): void
+    {
+        $response = $this->get(route('marketing.time-tracker-for-virtual-assistants'));
+
+        $response->assertOk()
+            ->assertSee('Best for solo VAs who choose their own tools and bill hourly or track prepaid client hours.')
+            ->assertSee('Switch recent clients quickly')
+            ->assertSee('Track short tasks accurately')
+            ->assertSee('client-ready CSV or PDF reports')
+            ->assertSee('€59')
+            ->assertSee('60-day trial')
+            ->assertSee('data-landing-event="va-trial-start"', false)
+            ->assertSee('utm_campaign=va_landing', false)
+            ->assertSee('does not replace your invoicing, CRM, or retainer-management workflow');
     }
 
     #[Test]

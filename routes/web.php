@@ -27,6 +27,7 @@ Route::view('time-tracker-for-freelancers', 'marketing.time-tracker-for-freelanc
 Route::view('time-tracker-for-small-business', 'marketing.time-tracker-for-small-business')->name('marketing.time-tracker-for-small-business');
 Route::view('privacy-friendly-time-tracking', 'marketing.privacy-friendly-time-tracking')->name('marketing.privacy-friendly-time-tracking');
 Route::view('project-time-tracking', 'marketing.project-time-tracking')->name('marketing.project-time-tracking');
+Route::view('time-tracker-for-virtual-assistants', 'marketing.time-tracker-for-virtual-assistants')->name('marketing.time-tracker-for-virtual-assistants');
 
 Route::view('/llms.txt', 'llms');
 

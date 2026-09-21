@@ -29,6 +29,7 @@
                     <div class="hidden lg:flex items-center gap-5">
                         <a href="{{ route('marketing.simple-time-tracker') }}" class="nav-item text-sm font-medium px-3 py-2 rounded-lg">{{ __('Simple tracker') }}</a>
                         <a href="{{ route('marketing.time-tracker-for-freelancers') }}" class="nav-item text-sm font-medium px-3 py-2 rounded-lg">{{ __('For freelancers') }}</a>
+                        <a href="{{ route('marketing.time-tracker-for-virtual-assistants') }}" class="nav-item text-sm font-medium px-3 py-2 rounded-lg">{{ __('For virtual assistants') }}</a>
                         <a href="{{ route('marketing.privacy-friendly-time-tracking') }}" class="nav-item text-sm font-medium px-3 py-2 rounded-lg">{{ __('Privacy') }}</a>
                     </div>
                 </div>

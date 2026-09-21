@@ -7,6 +7,7 @@
         ['route' => 'marketing.time-tracker-for-small-business', 'changefreq' => 'monthly', 'priority' => '0.8'],
         ['route' => 'marketing.privacy-friendly-time-tracking', 'changefreq' => 'monthly', 'priority' => '0.9'],
         ['route' => 'marketing.project-time-tracking', 'changefreq' => 'monthly', 'priority' => '0.8'],
+        ['route' => 'marketing.time-tracker-for-virtual-assistants', 'changefreq' => 'monthly', 'priority' => '0.9'],
     ] as $page)
     <url>
         <loc>{{ route($page['route']) }}</loc>
