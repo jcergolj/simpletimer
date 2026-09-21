@@ -18,13 +18,13 @@ use Tests\TestCase;
 final class EnsureTenantUserTest extends TestCase
 {
     #[Test]
-    public function a_session_for_another_tenant_is_rejected(): void
+    public function a_session_for_another_tenant_is_rejected(Request $request): void
     {
         Config::set('app.single_user_mode', false);
         Config::set('app.domain', 'simpletimer.test');
 
         $user = User::factory()->create(['username' => 'bob']);
-        $request = Request::create('http://bob.simpletimer.test/dashboard');
+        $request = $request->create('http://bob.simpletimer.test/dashboard');
         $request->setLaravelSession(app('session.store'));
         $request->setUserResolver(fn (): User => $user);
         $request->session()->put(TenantDatabaseService::SESSION_KEY, 'alice');
@@ -39,13 +39,13 @@ final class EnsureTenantUserTest extends TestCase
     }
 
     #[Test]
-    public function a_session_for_the_current_tenant_is_allowed(): void
+    public function a_session_for_the_current_tenant_is_allowed(Request $request): void
     {
         Config::set('app.single_user_mode', false);
         Config::set('app.domain', 'simpletimer.test');
 
         $user = User::factory()->create(['username' => 'alice']);
-        $request = Request::create('http://alice.simpletimer.test/dashboard');
+        $request = $request->create('http://alice.simpletimer.test/dashboard');
         $request->setLaravelSession(app('session.store'));
         $request->setUserResolver(fn (): User => $user);
         $request->session()->put(TenantDatabaseService::SESSION_KEY, 'alice');

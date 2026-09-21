@@ -76,9 +76,9 @@ final class EnsureTenantSessionMatchesHostTest extends TestCase
     }
 
     #[Test]
-    public function a_remembered_user_session_is_bound_to_the_current_tenant(): void
+    public function a_remembered_user_session_is_bound_to_the_current_tenant(Request $request): void
     {
-        $request = Request::create('https://alice.simpletimer.test/dashboard');
+        $request = $request->create('https://alice.simpletimer.test/dashboard');
         $session = new Store('test', new ArraySessionHandler(120));
         $session->start();
         $request->setLaravelSession($session);
@@ -106,13 +106,13 @@ final class EnsureTenantSessionMatchesHostTest extends TestCase
         $this->assertSame(200, $response->getStatusCode());
     }
 
-    private function requestWithTenant(string $host, string $tenant): Request
+    private function requestWithTenant(string $host, string $tenant, Request $request): Request
     {
         $session = new Store('test', new ArraySessionHandler(120));
         $session->start();
         $session->put('tenant', $tenant);
 
-        $request = Request::create("https://{$host}/dashboard");
+        $request = $request->create("https://{$host}/dashboard");
         $request->setLaravelSession($session);
 
         return $request;
