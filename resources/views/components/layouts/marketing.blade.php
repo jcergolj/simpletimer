@@ -16,7 +16,7 @@
     <meta property="og:type" content="website">
     <meta name="twitter:card" content="summary_large_image">
 
-    <link href="{{ tailwindcss('css/app.css') }}" rel="stylesheet" data-turbo-track="reload">
+    <link href="{{ tailwindcss('css/app.css') }}@tailwindcssVersion" rel="stylesheet" data-turbo-track="reload">
 </head>
 <body class="min-h-screen bg-[var(--color-bg)]">
     <nav class="app-nav sticky top-0 z-50">

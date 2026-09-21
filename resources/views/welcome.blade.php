@@ -47,7 +47,7 @@
     }
     </script>
 
-    <link href="{{ tailwindcss('css/app.css') }}" rel="stylesheet" data-turbo-track="reload" />
+    <link href="{{ tailwindcss('css/app.css') }}@tailwindcssVersion" rel="stylesheet" data-turbo-track="reload" />
 </head>
 <body class="min-h-screen" style="background: var(--color-bg);">
     <!-- Navigation -->
