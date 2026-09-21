@@ -16,5 +16,6 @@
             <x-marketing.feature title="Work privately">No screenshots, activity scores, or mouse tracking. Track work, not people.</x-marketing.feature>
         </div>
     </section>
+    <x-marketing.product-visuals compact />
     <x-marketing.cta heading="Spend less time reconstructing your work." />
 </x-layouts.marketing>

@@ -8,6 +8,7 @@
         heading="A simple time tracker that stays simple"
         intro="Start a timer, assign the work to a client or project, and get back to the work. SimpleTimer keeps time tracking out of your way."
     />
+    <x-marketing.product-visuals compact />
     <section class="py-20 bg-[var(--color-surface)]">
         <div class="max-w-5xl mx-auto px-6 lg:px-8 grid md:grid-cols-2 gap-6">
             <x-marketing.feature title="Start in one click">Track live work instantly or add completed time manually when the day is already moving.</x-marketing.feature>

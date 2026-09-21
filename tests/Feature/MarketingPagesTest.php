@@ -66,6 +66,18 @@ final class MarketingPagesTest extends TestCase
     }
 
     #[Test]
+    #[DataProvider('marketingPages')]
+    public function marketing_pages_include_product_visuals(string $routeName): void
+    {
+        $response = $this->get(route($routeName));
+
+        $response->assertOk()
+            ->assertSee('screenshots/running-timer.png', false)
+            ->assertSee('screenshots/dashboard.png', false)
+            ->assertSee('screenshots/reports.png', false);
+    }
+
+    #[Test]
     public function homepage_clearly_identifies_the_product_as_a_time_tracking_app(): void
     {
         $response = $this->get(route('home'));

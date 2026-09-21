@@ -8,6 +8,7 @@
         heading="Keep project time clear without enterprise complexity"
         intro="SimpleTimer helps small teams and owner-led businesses understand where project time goes and what work is ready to invoice."
     />
+    <x-marketing.product-visuals compact />
     <section class="py-20 bg-[var(--color-surface)]">
         <div class="max-w-5xl mx-auto px-6 lg:px-8 grid md:grid-cols-2 gap-6">
             <x-marketing.feature title="See project time">Keep project entries in one place and understand the effort behind each deliverable.</x-marketing.feature>

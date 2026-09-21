@@ -8,6 +8,7 @@
         heading="Time tracking without surveillance"
         intro="SimpleTimer records the time you choose to track. It does not watch your screen, score your activity, or turn work into a monitoring exercise."
     />
+    <x-marketing.product-visuals compact />
     <section class="py-20 bg-[var(--color-surface)]">
         <div class="max-w-5xl mx-auto px-6 lg:px-8 grid md:grid-cols-2 gap-6">
             <x-marketing.feature title="No screenshots">Your work stays yours. SimpleTimer does not capture your screen or inspect your applications.</x-marketing.feature>
