@@ -74,6 +74,7 @@
         ],
         "dev": [
             "Composer\\Config::disableProcessTimeout",
+            "php artisan tailwindcss:watch --no-tty",
             "php artisan solo"
         ],
         "dev:overmind": [
