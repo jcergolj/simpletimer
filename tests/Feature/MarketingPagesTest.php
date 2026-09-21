@@ -57,7 +57,7 @@ final class MarketingPagesTest extends TestCase
             ->assertSee('rel="canonical" href="'.route($routeName).'"', false)
             ->assertSee($heading);
 
-        self::assertSame(1, substr_count($response->getContent(), '<h1'));
+        $this->assertSame(1, substr_count($response->getContent(), '<h1'));
     }
 
     #[Test]
@@ -71,7 +71,7 @@ final class MarketingPagesTest extends TestCase
             ->assertSee('Simple time tracking for freelancers')
             ->assertSee('An app that tracks time, not you.');
 
-        self::assertSame(1, substr_count($response->getContent(), '<h1'));
+        $this->assertSame(1, substr_count($response->getContent(), '<h1'));
     }
 
     #[Test]
@@ -93,9 +93,9 @@ final class MarketingPagesTest extends TestCase
     {
         $robots = file_get_contents(public_path('robots.txt'));
 
-        self::assertIsString($robots);
-        self::assertStringContainsString("User-agent: *\nDisallow:", $robots);
-        self::assertStringContainsString('Sitemap: https://simpletimerapp.com/sitemap.xml', $robots);
-        self::assertStringNotContainsString('Disallow: /', $robots);
+        $this->assertIsString($robots);
+        $this->assertStringContainsString("User-agent: *\nDisallow:", $robots);
+        $this->assertStringContainsString('Sitemap: https://simpletimerapp.com/sitemap.xml', $robots);
+        $this->assertStringNotContainsString('Disallow: /', $robots);
     }
 }

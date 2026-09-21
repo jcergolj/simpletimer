@@ -1,6 +1,6 @@
 <x-layouts.auth :title="__('Register')">
     <div class="flex flex-col gap-6">
-        <x-auth-header :title="__('Create an account')" :description="__('Enter your details below to create your account')" />
+        <x-auth-header :title="__('Start tracking in under 30 seconds')" :description="__('Create your account and start tracking client work quickly.')" />
 
         <!-- Session Status -->
         <x-auth-session-status class="text-center" :status="session('status')" />
@@ -8,26 +8,23 @@
         <form action="{{ route('register.store') }}" method="post" class="flex flex-col gap-6" data-turbo="false">
             @csrf
 
-            <!-- Username -->
+            <!-- Username / domain -->
             <div data-controller="subdomain-preview">
-                <x-form.label for="username">{{ __('Username') }}</x-form.label>
+                <x-form.label for="username">{{ __('Choose your username') }}</x-form.label>
 
                 <x-form.text-input id="username" name="username" :value="old('username')" :data-error="$errors->has('username')" required autofocus
-                    autocomplete="username" :placeholder="__('username (3-20 characters, a-z, 0-9, -, _)')" class="mt-2"
+                    autocomplete="username" :placeholder="__('username')" class="mt-2"
                     data-subdomain-preview-target="input"
                     data-action="input->subdomain-preview#updatePreview" />
 
                 <p style="font-size: 13px; color: var(--text-muted); margin-top: 4px;">
-                    {{ __('Your URL will be:') }} <strong data-subdomain-preview-target="preview">username</strong>.{{ parse_url(config('app.url'), PHP_URL_HOST) }}
-                </p>
-                <p style="font-size: 13px; color: var(--warning, #f59e0b); margin-top: 4px;">
-                    <strong>{{ __('Remember your username - you\'ll need it to access your account!') }}</strong>
+                    {{ __('Your workspace URL will be:') }} <strong data-subdomain-preview-target="preview">username</strong>.{{ parse_url(config('app.url'), PHP_URL_HOST) }}
                 </p>
 
                 <x-form.error for="username" />
             </div>
 
-            <!-- Email Address -->
+            <!-- Email -->
             <div>
                 <x-form.label for="email">{{ __('Email address') }}</x-form.label>
 
@@ -47,7 +44,7 @@
                 <x-form.error for="password" />
             </div>
 
-            <!-- Confirm Password -->
+            <!-- Confirm password -->
             <div>
                 <x-form.label for="password_confirmation">{{ __('Confirm password') }}</x-form.label>
 
@@ -57,28 +54,8 @@
                 <x-form.error for="password_confirmation" />
             </div>
 
-            <!-- Hourly Rate -->
-            <div>
-                <x-form.label for="hourly_rate_amount">{{ __('Hourly Rate (Optional)') }}</x-form.label>
-
-                <div class="mt-2">
-                    <x-form.hourly-rate class="w-full" />
-                </div>
-
-                <div class="flex gap-2 mt-1">
-                    <div class="flex-1">
-                        <x-form.error for="hourly_rate.amount" />
-                    </div>
-                    <div class="w-32">
-                        <x-form.error for="hourly_rate.currency" />
-                    </div>
-                </div>
-
-                <p style="font-size: 13px; color: var(--text-muted); margin-top: 4px;">{{ __('Set your default hourly rate for time tracking') }}</p>
-            </div>
-
             <div class="flex items-center justify-end">
-                <x-form.button.primary type="submit" class="w-full">{{ __('Create account') }}</x-form.button.primary>
+                <x-form.button.primary type="submit" class="w-full">{{ __('Create account and start tracking') }}</x-form.button.primary>
             </div>
         </form>
     </div>
