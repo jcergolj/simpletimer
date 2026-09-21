@@ -3,21 +3,21 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>{{ config('app.name', 'SimpleTimer') }} — Simple Time Tracking for Freelancers | One-Click Timer & Reports</title>
-    <meta name="description" content="SimpleTimer — dead simple time tracking for freelancers. One-click timer, client management, CSV reports. Self-host free or use managed SaaS for {{ config('app.yearly_price', '€59') }}/year. No bloat, no onboarding.">
+    <title>Simple Time Tracking App for Freelancers | SimpleTimer</title>
+    <meta name="description" content="A simple, privacy-friendly time tracking app for freelancers. Track work by client and project, set hourly rates, and export reports without employee surveillance.">
     <link rel="canonical" href="{{ url('/') }}">
 
     {{-- Open Graph --}}
-    <meta property="og:title" content="{{ config('app.name', 'SimpleTimer') }} — Simple Time Tracking for Freelancers">
-    <meta property="og:description" content="One-click timer, client management, CSV reports. Self-host free or managed SaaS for {{ config('app.yearly_price', '€59') }}/year.">
+    <meta property="og:title" content="Simple Time Tracking App for Freelancers | SimpleTimer">
+    <meta property="og:description" content="Track work by client and project, set hourly rates, and export reports without employee surveillance.">
     <meta property="og:image" content="{{ asset('screenshots/dashboard.png') }}">
     <meta property="og:url" content="{{ url('/') }}">
     <meta property="og:type" content="website">
 
     {{-- Twitter Card --}}
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="{{ config('app.name', 'SimpleTimer') }} — Simple Time Tracking for Freelancers">
-    <meta name="twitter:description" content="One-click timer, client management, CSV reports. Self-host free or managed SaaS for {{ config('app.yearly_price', '€59') }}/year.">
+    <meta name="twitter:title" content="Simple Time Tracking App for Freelancers | SimpleTimer">
+    <meta name="twitter:description" content="Track work by client and project, set hourly rates, and export reports without employee surveillance.">
     <meta name="twitter:image" content="{{ asset('screenshots/dashboard.png') }}">
 
     {{-- Structured Data --}}
@@ -43,7 +43,7 @@
                 "description": "Managed SaaS — yearly"
             }
         ],
-        "description": "Simple time tracking for freelancers. One-click timer, client management, CSV reports."
+         "description": "A simple, privacy-friendly time tracking app for freelancers with clients, projects, hourly rates, and exportable reports."
     }
     </script>
 
@@ -56,7 +56,7 @@
             <div class="max-w-7xl mx-auto px-6 lg:px-8">
                 <div class="flex justify-between items-center h-20">
                     <div class="flex items-center gap-16">
-                        <h1 class="text-xl font-display text-[var(--color-nav-text)]">{{ config('app.name', 'Simple') }}</h1>
+                        <a href="{{ route('home') }}" class="text-xl font-display text-[var(--color-nav-text)]" aria-label="SimpleTimer home">{{ config('app.name', 'Simple') }}</a>
                         <div class="hidden md:flex items-center gap-8">
                             <a href="#features" class="nav-item text-sm font-medium px-3 py-2 rounded-lg">{{ __('Features') }}</a>
                             <a href="#pricing" class="nav-item text-sm font-medium px-3 py-2 rounded-lg">{{ __('Pricing') }}</a>
@@ -102,7 +102,7 @@
 
                     <h1 class="text-5xl sm:text-6xl lg:text-7xl font-display mb-4 leading-[1.05]">
                         <span class="bg-gradient-to-br from-[var(--color-text)] via-[var(--color-text-secondary)] to-[var(--color-text)] bg-clip-text text-transparent">
-                            {{ __('SimpleTimer') }}
+                            {{ __('Simple time tracking for freelancers') }}
                         </span>
                     </h1>
 
@@ -112,10 +112,10 @@
 
                     <div class="space-y-3">
                         <p class="text-lg text-[var(--color-text-secondary)] leading-relaxed">
-                            {{ __('Track time in seconds, see exactly what to invoice, export CSVs — done.') }}
+                            {{ __('Start a timer or add time manually, organise work by client and project, and export clear reports for invoicing.') }}
                         </p>
                         <p class="text-base text-[var(--color-text-muted)]">
-                            {{ __('No onboarding. No bloat.') }}
+                            {{ __('An app that tracks time, not you. No screenshots, activity scores, or mouse tracking.') }}
                         </p>
                     </div>
 

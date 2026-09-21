@@ -22,6 +22,12 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', fn () => view('welcome'))->name('home');
 
+Route::view('simple-time-tracker', 'marketing.simple-time-tracker')->name('marketing.simple-time-tracker');
+Route::view('time-tracker-for-freelancers', 'marketing.time-tracker-for-freelancers')->name('marketing.time-tracker-for-freelancers');
+Route::view('time-tracker-for-small-business', 'marketing.time-tracker-for-small-business')->name('marketing.time-tracker-for-small-business');
+Route::view('privacy-friendly-time-tracking', 'marketing.privacy-friendly-time-tracking')->name('marketing.privacy-friendly-time-tracking');
+Route::view('project-time-tracking', 'marketing.project-time-tracking')->name('marketing.project-time-tracking');
+
 Route::view('/llms.txt', 'llms');
 
 Route::get('sitemap.xml', fn () => response()->view('sitemap')->header('Content-Type', 'application/xml'))->name('sitemap');
