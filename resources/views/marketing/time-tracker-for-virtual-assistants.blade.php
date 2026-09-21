@@ -80,6 +80,45 @@
         </div>
     </section>
 
+    <section id="see-it" class="bg-[var(--color-bg)] py-20 lg:py-24">
+        <div class="mx-auto max-w-7xl px-6 lg:px-8">
+            <div class="mx-auto max-w-3xl text-center">
+                <p class="text-sm font-semibold uppercase tracking-wider text-[var(--color-primary)]">{{ __('See the workflow') }}</p>
+                <h2 class="mt-3 text-4xl font-display text-[var(--color-text)]">{{ __('Start a timer, switch work, send the report') }}</h2>
+                <p class="mt-4 text-lg leading-relaxed text-[var(--color-text-secondary)]">{{ __('The interface stays focused: choose the client, track the task, and review the totals when the work is done.') }}</p>
+            </div>
+
+            <div class="mt-12 grid gap-8 lg:grid-cols-2">
+                <figure class="overflow-hidden rounded-3xl border-2 border-[var(--color-border)] bg-[var(--color-surface)] shadow-lg">
+                    <img src="{{ asset('screenshots/running-timer.png') }}" alt="SimpleTimer running timer for a client task" class="w-full" loading="lazy">
+                    <figcaption class="p-6">
+                        <h3 class="text-xl font-display text-[var(--color-text)]">{{ __('Track the task in one click') }}</h3>
+                        <p class="mt-2 text-[var(--color-text-secondary)]">{{ __('Start or stop a timer for the client and project you are working on.') }}</p>
+                    </figcaption>
+                </figure>
+                <figure class="overflow-hidden rounded-3xl border-2 border-[var(--color-border)] bg-[var(--color-surface)] shadow-lg">
+                    <img src="{{ asset('screenshots/dashboard.png') }}" alt="SimpleTimer dashboard with client time totals" class="w-full" loading="lazy">
+                    <figcaption class="p-6">
+                        <h3 class="text-xl font-display text-[var(--color-text)]">{{ __('See where the day went') }}</h3>
+                        <p class="mt-2 text-[var(--color-text-secondary)]">{{ __('Review recent entries and client totals without rebuilding your day from memory.') }}</p>
+                    </figcaption>
+                </figure>
+            </div>
+
+            <div class="mt-8 grid items-center gap-8 rounded-3xl border-2 border-[var(--color-border)] bg-[var(--color-surface)] p-6 lg:grid-cols-2 lg:p-8">
+                <div>
+                    <img src="{{ asset('screenshots/reports.png') }}" alt="SimpleTimer client report with export options" class="w-full rounded-2xl" loading="lazy">
+                </div>
+                <div>
+                    <p class="text-sm font-semibold uppercase tracking-wider text-[var(--color-primary)]">{{ __('Reports') }}</p>
+                    <h3 class="mt-3 text-3xl font-display text-[var(--color-text)]">{{ __('Give clients a clear record of the work') }}</h3>
+                    <p class="mt-4 leading-relaxed text-[var(--color-text-secondary)]">{{ __('Filter the period, client, or project, then export a CSV or PDF for the next step in your existing workflow.') }}</p>
+                    <a href="https://www.youtube.com/watch?v=iAdK0C3ZuuM" target="_blank" rel="noopener noreferrer" data-landing-event="va-demo-video" class="btn-secondary mt-6 inline-flex items-center rounded-xl px-6 py-3 font-semibold">{{ __('Watch the 30-second demo') }}</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <section class="bg-[var(--color-bg)] py-20 lg:py-24">
         <div class="mx-auto grid max-w-6xl items-center gap-12 px-6 lg:grid-cols-2 lg:px-8">
             <div>
