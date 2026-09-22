@@ -90,14 +90,14 @@
 
             <div class="mt-12 grid gap-8 lg:grid-cols-2">
                 <figure class="overflow-hidden rounded-3xl border-2 border-[var(--color-border)] bg-[var(--color-surface)] shadow-lg">
-                    <img src="{{ asset('screenshots/running-timer.png') }}" alt="SimpleTimer running timer for a client task" class="w-full" loading="lazy">
+                    <img src="{{ asset('screenshots/running-timer.png') }}" alt="SimpleTimer running timer for a client task" class="marketing-screenshot" loading="lazy" width="1216" height="1065">
                     <figcaption class="p-6">
                         <h3 class="text-xl font-display text-[var(--color-text)]">{{ __('Track the task in one click') }}</h3>
                         <p class="mt-2 text-[var(--color-text-secondary)]">{{ __('Start or stop a timer for the client and project you are working on.') }}</p>
                     </figcaption>
                 </figure>
                 <figure class="overflow-hidden rounded-3xl border-2 border-[var(--color-border)] bg-[var(--color-surface)] shadow-lg">
-                    <img src="{{ asset('screenshots/dashboard.png') }}" alt="SimpleTimer dashboard with client time totals" class="w-full" loading="lazy">
+                    <img src="{{ asset('screenshots/dashboard.png') }}" alt="SimpleTimer dashboard with client time totals" class="marketing-screenshot" loading="lazy" width="1216" height="1199">
                     <figcaption class="p-6">
                         <h3 class="text-xl font-display text-[var(--color-text)]">{{ __('See where the day went') }}</h3>
                         <p class="mt-2 text-[var(--color-text-secondary)]">{{ __('Review recent entries and client totals without rebuilding your day from memory.') }}</p>
@@ -107,7 +107,7 @@
 
             <div class="mt-8 grid items-center gap-8 rounded-3xl border-2 border-[var(--color-border)] bg-[var(--color-surface)] p-6 lg:grid-cols-2 lg:p-8">
                 <div>
-                    <img src="{{ asset('screenshots/reports.png') }}" alt="SimpleTimer client report with export options" class="w-full rounded-2xl" loading="lazy">
+                    <img src="{{ asset('screenshots/reports.png') }}" alt="SimpleTimer client report with export options" class="marketing-screenshot rounded-2xl" loading="lazy" width="1280" height="1158">
                 </div>
                 <div>
                     <p class="text-sm font-semibold uppercase tracking-wider text-[var(--color-primary)]">{{ __('Reports') }}</p>

@@ -150,7 +150,7 @@
                     <div class="screenshot-container relative">
                         <div class="absolute -top-4 -right-4 w-24 h-24 bg-gradient-to-br from-orange-400 to-orange-600 rounded-full opacity-20 blur-3xl"></div>
                         <div class="absolute -bottom-6 -left-6 w-32 h-32 bg-gradient-to-br from-[var(--color-primary)] to-[var(--color-primary-hover)] rounded-full opacity-20 blur-3xl"></div>
-                        <img src="{{ asset('screenshots/dashboard.png') }}" alt="Dashboard preview" class="w-full h-[450px] object-contain object-center relative z-10">
+                        <img src="{{ asset('screenshots/dashboard.png') }}" alt="Dashboard preview" class="marketing-screenshot relative z-10" width="1216" height="1199">
                     </div>
                 </div>
             </div>
@@ -354,7 +354,7 @@
                 <div class="space-y-6">
                     <div class="screenshot-container relative mb-6">
                         <div class="absolute -bottom-6 -right-6 w-32 h-32 bg-gradient-to-br from-[var(--color-primary)] to-[var(--color-primary-hover)] rounded-full opacity-15 blur-3xl"></div>
-                        <img src="{{ asset('screenshots/running-timer.png') }}" alt="Running timer with keyboard shortcuts" class="w-full h-[450px] object-contain object-center relative z-10" loading="lazy">
+                        <img src="{{ asset('screenshots/running-timer.png') }}" alt="Running timer with keyboard shortcuts" class="marketing-screenshot relative z-10" loading="lazy" width="1216" height="1065">
                     </div>
                     <div class="inline-flex items-center gap-2 bg-[var(--color-primary-light)] text-[var(--color-primary)] px-4 py-2 rounded-full text-sm font-semibold">
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -385,7 +385,7 @@
                 <div class="space-y-6">
                     <div class="screenshot-container relative mb-6">
                         <div class="absolute -bottom-6 -right-6 w-32 h-32 bg-gradient-to-br from-green-400 to-green-600 rounded-full opacity-15 blur-3xl"></div>
-                        <img src="{{ asset('screenshots/reports.png') }}" alt="CSV reports showing per-client totals" class="w-full h-[450px] object-contain object-center relative z-10" loading="lazy">
+                        <img src="{{ asset('screenshots/reports.png') }}" alt="CSV reports showing per-client totals" class="marketing-screenshot relative z-10" loading="lazy" width="1280" height="1158">
                     </div>
                     <div class="inline-flex items-center gap-2 bg-green-100 text-green-700 px-4 py-2 rounded-full text-sm font-semibold">
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -419,7 +419,7 @@
                 <div class="space-y-6">
                     <div class="screenshot-container relative mb-6">
                         <div class="absolute -top-6 -left-6 w-32 h-32 bg-gradient-to-br from-orange-400 to-orange-600 rounded-full opacity-15 blur-3xl"></div>
-                        <img src="{{ asset('screenshots/start-tracking-with-new-client.png') }}" alt="Self-hosting privacy control" class="w-full h-[450px] object-contain object-center relative z-10" loading="lazy">
+                        <img src="{{ asset('screenshots/start-tracking-with-new-client.png') }}" alt="Self-hosting privacy control" class="marketing-screenshot relative z-10" loading="lazy" width="1280" height="1046">
                     </div>
                     <div class="inline-flex items-center gap-2 bg-orange-100 text-orange-700 px-4 py-2 rounded-full text-sm font-semibold">
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -450,7 +450,7 @@
                 <div class="space-y-6">
                     <div class="screenshot-container relative mb-6">
                         <div class="absolute -bottom-6 -right-6 w-32 h-32 bg-gradient-to-br from-[var(--color-primary)] to-[var(--color-primary-hover)] rounded-full opacity-15 blur-3xl"></div>
-                        <img src="{{ asset('screenshots/dashboard.png') }}" alt="Multi-currency client tracking" class="w-full h-[450px] object-contain object-center relative z-10" loading="lazy">
+                        <img src="{{ asset('screenshots/dashboard.png') }}" alt="Multi-currency client tracking" class="marketing-screenshot relative z-10" loading="lazy" width="1216" height="1199">
                     </div>
                     <div class="inline-flex items-center gap-2 bg-[var(--color-primary-light)] text-[var(--color-primary)] px-4 py-2 rounded-full text-sm font-semibold">
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
