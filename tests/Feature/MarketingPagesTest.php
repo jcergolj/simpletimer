@@ -65,8 +65,14 @@ final class MarketingPagesTest extends TestCase
         $this->assertSame(1, substr_count($response->getContent(), '<h1'));
     }
 
+    /** @return array<string, array{string}> */
+    public static function marketingPageRoutes(): array
+    {
+        return array_map(fn (array $page): array => [$page[0]], self::marketingPages());
+    }
+
     #[Test]
-    #[DataProvider('marketingPages')]
+    #[DataProvider('marketingPageRoutes')]
     public function marketing_pages_include_product_visuals(string $routeName): void
     {
         $response = $this->get(route($routeName));

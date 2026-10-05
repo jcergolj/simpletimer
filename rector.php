@@ -48,6 +48,9 @@ return RectorConfig::configure()
         ];
     })())
     ->withPhpSets(php83: true)
+    ->withSkip([
+        RequestStaticValidateToInjectRector::class => [__DIR__.'/tests'],
+    ])
     ->withRules([
         AddVoidReturnTypeWhereNoReturnRector::class,
         AnonymousMigrationsRector::class,
