@@ -433,7 +433,7 @@
         </div>
     </section>
 
-    <!-- O'Saasy Explainer Section -->
+    <!-- MIT License Explainer Section -->
     <section class="section-spacing bg-[var(--color-surface)]">
         <div class="max-w-4xl mx-auto px-6 lg:px-8">
             <div class="text-center">
@@ -441,7 +441,7 @@
                     {{ __('Your time records stay yours') }}
                 </h2>
                 <p class="text-lg text-[var(--color-text-secondary)] leading-relaxed mb-8">
-                    {{ __('SimpleTimer is O\'Saasy licensed. That means you can self-host it on your server for free forever. Or use our managed version. Either way, your data is yours. You\'re never locked in.') }}
+                    {{ __('SimpleTimer is MIT licensed. You can use, modify, and distribute it, including commercially or as a hosted service. Self-host for free or use our managed version. Either way, your data is yours. You\'re never locked in.') }}
                 </p>
                 <div class="flex flex-col sm:flex-row justify-center items-center gap-8 text-[var(--color-text)]">
                     <span class="flex items-center gap-3">
@@ -565,7 +565,7 @@
                     <ul class="space-y-3 text-[var(--color-text-secondary)]">
                         <li class="flex items-center gap-2">
                             <x-icons.check class="w-4 h-4 text-green-600" />
-                            <span><a href="https://osaasy.dev/" target="_blank" rel="noopener noreferrer" class="hover:underline hover:text-green-700">O'Saasy Licensed</a></span>
+                            <span><a href="https://github.com/jcergolj/simpletimer/blob/master/LICENSE" target="_blank" rel="noopener noreferrer" class="hover:underline hover:text-green-700">MIT Licensed</a></span>
                         </li>
                         <li class="flex items-center gap-2">
                             <x-icons.check class="w-4 h-4 text-[var(--color-primary)]" />

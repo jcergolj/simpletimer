@@ -4,7 +4,7 @@
 
 Timer • Clients • Projects • Reports
 
-A simple time tracking web app for freelancers and consultants who bill by the hour. Self-host forever. Built with Laravel 12 and Hotwire. [O'Saasy licensed](https://osaasy.dev/)—free to self-host forever, SaaS rights reserved.
+A simple time tracking web app for freelancers and consultants who bill by the hour. Self-host forever. Built with Laravel 12 and Hotwire. [MIT licensed](LICENSE)—free to use, modify, and distribute, including commercially.
 
 **Create a client. Add a project. Start timing. Under 30 seconds—all from your dashboard.**
 
@@ -273,20 +273,9 @@ APP_TIMEZONE=UTC  # Set to your timezone
 
 User preferences (date/time formats, hourly rates) configurable in Settings page.
 
-## O'Saasy License
+## MIT License
 
-**[Learn more about O'Saasy License →](https://osaasy.dev/)**
-
-**Free to self-host forever. SaaS rights reserved.**
-
-The O'Saasy License means:
-- ✓ **Use it freely**: Install, modify, and run SimpleTimer on your own server at no cost
-- ✓ **Own your data**: Full control and privacy—your data never leaves your server
-- ✓ **Audit the code**: Open source, inspect every line
-- ✓ **Extend it**: Build custom features for your own needs
-- ✗ **No SaaS competition**: You cannot offer SimpleTimer as a competing hosted service
-
-**Why this license?** It keeps the project sustainable while ensuring you can self-host forever without restrictions.
+SimpleTimer is free to use, modify, and distribute, including commercially or as a hosted service, under the MIT License. Include the copyright and permission notices in all copies or substantial portions of the software.
 
 Full license text: [LICENSE](LICENSE)
 
@@ -298,16 +287,16 @@ If you're good with UI/UX and want to help make it more minimal/clean, that'd be
 
 ## License
 
-[O'Saasy licensed](https://osaasy.dev/) - free to self-host forever, SaaS rights reserved.
+[MIT licensed](LICENSE) - free to use, modify, and distribute, including commercially.
 
-See the [O'Saasy License](#osaasy-license) section above for details.
+See the [MIT License](#mit-license) section above for details.
 
 ## FAQ
 
 **Here's what freelancers usually ask:**
 
 ### Is it really free forever?
-Yes. O'Saasy license means free self-hosting forever. We reserve rights to offer a managed SaaS version, but the open-source stays free.
+Yes. SimpleTimer is MIT licensed and free to self-host. You can also modify, distribute, or offer it as a hosted service under the license terms. Our managed hosting is optional and paid.
 
 ### Does it support teams or just solo users?
 
@@ -371,6 +360,6 @@ Don't want to self-host? We'll handle all the technical details for you. Same si
 
 ---
 
-Core stays free and open source. Optional paid features will support development, but the base app will always be O'Saasy licensed and self-hostable.
+Core stays free and open source. Optional paid features will support development, but the base app will always be MIT licensed and self-hostable.
 
 **Interested in these features?** Star on [GitHub](https://github.com/jcergolj/simpletime) to stay updated.

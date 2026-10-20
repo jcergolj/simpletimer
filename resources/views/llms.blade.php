@@ -41,7 +41,7 @@ Register: https://simpletimerapp.com/register
 
 - **Hosted:** {{ config('app.yearly_price') }}/year after a {{ config('app.trial_period_days') }}-day free trial. All features and hosting included.
 - **Self-Hosted:** Free. Full source code. Manage your own server, updates, and data. Community support via GitHub.
-- **License:** O'Saasy License — free to self-host forever, SaaS rights reserved. See https://osaasy.dev/
+- **License:** MIT License — free to use, modify, and distribute, including commercially or as a hosted service. See https://github.com/jcergolj/simpletimer/blob/master/LICENSE
 
 ## Quick Start
 
@@ -55,7 +55,7 @@ For current self-hosting requirements and setup steps, see the repository README
 - **Website:** https://simpletimerapp.com
 - **GitHub:** https://github.com/jcergolj/simpletimer
 - **Register:** https://simpletimerapp.com/register
-- **License:** https://osaasy.dev/
+- **License:** https://github.com/jcergolj/simpletimer/blob/master/LICENSE
 - **Issues:** https://github.com/jcergolj/simpletimer/issues
 
 ## Philosophy

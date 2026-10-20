@@ -8,7 +8,7 @@
         "framework",
         "hotwire"
     ],
-    "license": "O'Saasy-1.0",
+    "license": "MIT",
     "require": {
         "php": "^8.2",
         "blade-ui-kit/blade-heroicons": "^2.6",
