@@ -89,12 +89,43 @@ final class MarketingPagesTest extends TestCase
         $response = $this->get(route('home'));
 
         $response->assertOk()
-            ->assertSee('<title>Simple Time Tracking App for Freelancers | SimpleTimer</title>', false)
+            ->assertSee('<title>Time Tracking for Freelance Developers &amp; Consultants | SimpleTimer</title>', false)
             ->assertSee('rel="canonical" href="'.route('home').'"', false)
-            ->assertSee('Simple time tracking for freelancers')
+            ->assertSee('Know exactly what to invoice.')
+            ->assertSee('Simple time tracking for freelance developers and consultants who bill by the hour.')
             ->assertSee('An app that tracks time, not you.');
 
         $this->assertSame(1, substr_count($response->getContent(), '<h1'));
+    }
+
+    #[Test]
+    public function homepage_prioritises_hosted_pricing_without_lifetime_free_promotions(): void
+    {
+        $response = $this->get(route('home'));
+
+        $response->assertOk()
+            ->assertSee(config('app.yearly_price'))
+            ->assertSee('60-day free trial, then €59/year.')
+            ->assertSee('href="'.route('register').'"', false)
+            ->assertSee('href="#demo"', false)
+            ->assertSeeInOrder(['Hosted for you', 'Prefer to self-host?'])
+            ->assertDontSee('Early Adopter Offer')
+            ->assertDontSee('lifetime free spots')
+            ->assertDontSee('money-back guarantee');
+    }
+
+    #[Test]
+    public function llms_file_matches_the_homepage_audience_and_offer(): void
+    {
+        $response = $this->get('/llms.txt');
+
+        $response->assertOk()
+            ->assertSee('freelance developers and consultants who bill by the hour')
+            ->assertSee('Hosted for you: €59/year with a 60-day free trial.')
+            ->assertSee('SimpleTimer produces reports, not invoices.')
+            ->assertSee('Self-hosting is optional and free.')
+            ->assertDontSee('Pay nothing. Forever.')
+            ->assertDontSee('money-back guarantee');
     }
 
     #[Test]

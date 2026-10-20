@@ -3,21 +3,21 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Simple Time Tracking App for Freelancers | SimpleTimer</title>
-    <meta name="description" content="A simple, privacy-friendly time tracking app for freelancers. Track work by client and project, set hourly rates, and export reports without employee surveillance.">
+    <title>Time Tracking for Freelance Developers &amp; Consultants | SimpleTimer</title>
+    <meta name="description" content="Simple time tracking for freelance developers and consultants who bill hourly. Track client work, see billable totals, and export reports. €59/year after a 60-day free trial.">
     <link rel="canonical" href="{{ url('/') }}">
 
     {{-- Open Graph --}}
-    <meta property="og:title" content="Simple Time Tracking App for Freelancers | SimpleTimer">
-    <meta property="og:description" content="Track work by client and project, set hourly rates, and export reports without employee surveillance.">
+    <meta property="og:title" content="Time Tracking for Freelance Developers &amp; Consultants | SimpleTimer">
+    <meta property="og:description" content="Know exactly what to invoice. Track client work, review billable totals, and export reports without a complicated app.">
     <meta property="og:image" content="{{ asset('screenshots/dashboard.png') }}">
     <meta property="og:url" content="{{ url('/') }}">
     <meta property="og:type" content="website">
 
     {{-- Twitter Card --}}
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="Simple Time Tracking App for Freelancers | SimpleTimer">
-    <meta name="twitter:description" content="Track work by client and project, set hourly rates, and export reports without employee surveillance.">
+    <meta name="twitter:title" content="Time Tracking for Freelance Developers &amp; Consultants | SimpleTimer">
+    <meta name="twitter:description" content="Know exactly what to invoice. Track client work, review billable totals, and export reports without a complicated app.">
     <meta name="twitter:image" content="{{ asset('screenshots/dashboard.png') }}">
 
     {{-- Structured Data --}}
@@ -43,7 +43,7 @@
                 "description": "Managed SaaS — yearly"
             }
         ],
-         "description": "A simple, privacy-friendly time tracking app for freelancers with clients, projects, hourly rates, and exportable reports."
+         "description": "Simple time tracking for freelance developers and consultants who bill hourly, with clients, projects, hourly rates, and exportable reports."
     }
     </script>
 
@@ -77,7 +77,7 @@
                                 <a href="{{ route('login') }}" class="text-sm font-semibold text-[var(--color-nav-text-muted)] hover:text-[var(--color-nav-text)] transition-colors hidden sm:inline-block">{{ __('Log in') }}</a>
                             @endif
                             @if (Route::has('register') && !\App\Models\User::exists())
-                                <a href="{{ route('register') }}" class="btn-primary px-6 py-2.5 rounded-xl text-sm">{{ __('Get Started') }}</a>
+                                <a href="{{ route('register') }}" class="btn-primary px-6 py-2.5 rounded-xl text-sm">{{ __('Start free trial') }}</a>
                             @endif
                         @endauth
                     </div>
@@ -97,22 +97,25 @@
                 <div class="lg:col-span-6 space-y-8">
                     <div class="badge">
                         <span class="accent-dot"></span>
-                        <span class="text-[var(--color-text)]">Open Source • <a href="https://osaasy.dev/" target="_blank" rel="noopener noreferrer" class="hover:underline">O'Saasy Licensed</a></span>
+                        <span class="text-[var(--color-text)]">{{ __('For independent developers & consultants') }}</span>
                     </div>
 
                     <h1 class="text-5xl sm:text-6xl lg:text-7xl font-display mb-4 leading-[1.05]">
                         <span class="bg-gradient-to-br from-[var(--color-text)] via-[var(--color-text-secondary)] to-[var(--color-text)] bg-clip-text text-transparent">
-                            {{ __('Simple time tracking for freelancers') }}
+                            {{ __('Know exactly what to invoice.') }}
                         </span>
                     </h1>
 
                     <p class="text-2xl sm:text-3xl font-display text-[var(--color-text-secondary)] leading-[1.25]">
-                        <span class="text-orange-500">{{ __('One click away.') }}</span>
+                        <span class="text-orange-500">{{ __('Without another complicated app.') }}</span>
                     </p>
 
                     <div class="space-y-3">
                         <p class="text-lg text-[var(--color-text-secondary)] leading-relaxed">
-                            {{ __('Start a timer or add time manually, organise work by client and project, and export clear reports for invoicing.') }}
+                            {{ __('Simple time tracking for freelance developers and consultants who bill by the hour.') }}
+                        </p>
+                        <p class="text-lg text-[var(--color-text-secondary)] leading-relaxed">
+                            {{ __('Track client work, review your hours and billable totals, then export a report for your invoicing tool.') }}
                         </p>
                         <p class="text-base text-[var(--color-text-muted)]">
                             {{ __('An app that tracks time, not you. No screenshots, activity scores, or mouse tracking.') }}
@@ -135,22 +138,25 @@
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M13 7l5 5m0 0l-5 5m5-5H6"></path>
                                     </svg>
                                 </a>
-                                <a href="https://github.com/jcergolj/simpletimer#readme" target="_blank" rel="noopener noreferrer" class="btn-secondary px-10 py-5 rounded-2xl text-center inline-flex items-center justify-center gap-2 text-base font-semibold">
+                                <a href="#demo" class="btn-secondary px-10 py-5 rounded-2xl text-center inline-flex items-center justify-center gap-2 text-base font-semibold">
                                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path>
                                     </svg>
-                                    <span>{{ __('Self-host free') }}</span>
+                                    <span>{{ __('See how it works') }}</span>
                                 </a>
                             @endif
                         @endauth
                     </div>
+                    <p class="text-sm text-[var(--color-text-muted)]">
+                        {{ __(':days-day free trial, then :price/year.', ['days' => config('app.trial_period_days'), 'price' => config('app.yearly_price')]) }}
+                    </p>
                 </div>
 
                 <div class="lg:col-span-6">
                     <div class="screenshot-container relative">
                         <div class="absolute -top-4 -right-4 w-24 h-24 bg-gradient-to-br from-orange-400 to-orange-600 rounded-full opacity-20 blur-3xl"></div>
                         <div class="absolute -bottom-6 -left-6 w-32 h-32 bg-gradient-to-br from-[var(--color-primary)] to-[var(--color-primary-hover)] rounded-full opacity-20 blur-3xl"></div>
-                        <img src="{{ asset('screenshots/dashboard.png') }}" alt="Dashboard preview" class="marketing-screenshot relative z-10" width="1216" height="1199">
+                        <img src="{{ asset('screenshots/dashboard.png') }}" alt="SimpleTimer dashboard with client work, tracked hours, and billable totals" class="marketing-screenshot relative z-10" width="1216" height="1199">
                     </div>
                 </div>
             </div>
@@ -158,14 +164,14 @@
     </section>
 
     <!-- Demo Video Section -->
-    <section class="py-24 bg-[var(--color-surface)]">
+    <section id="demo" class="py-24 bg-[var(--color-surface)]">
         <div class="max-w-4xl mx-auto px-6 lg:px-8">
             <div class="text-center mb-12">
                 <h2 class="text-3xl sm:text-4xl font-display mb-4 text-[var(--color-text)]">
                     {{ __('See It in Action') }}
                 </h2>
                 <p class="text-lg text-[var(--color-text-secondary)]">
-                    {{ __('From zero to tracking in under 30 seconds.') }}
+                    {{ __('See how to track client work and find the totals for your next invoice.') }}
                 </p>
             </div>
             <div class="relative w-full rounded-2xl overflow-hidden shadow-2xl" style="padding-bottom: 56.25%;">
@@ -173,6 +179,7 @@
                     class="absolute inset-0 w-full h-full"
                     src="https://www.youtube.com/embed/iAdK0C3ZuuM"
                     title="SimpleTimer Demo"
+                    loading="lazy"
                     frameborder="0"
                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                     allowfullscreen
@@ -191,122 +198,43 @@
                     </svg>
                 </div>
                 <h2 class="text-3xl sm:text-4xl font-display mb-6 text-[var(--color-text)]">
-                    {{ __('Not for teams. Not for dashboards full of features you\'ll never use.') }}
+                    {{ __('Bill by the hour? Keep your time tracking simple.') }}
                 </h2>
                 <p class="text-xl text-[var(--color-text-secondary)] max-w-3xl mx-auto leading-relaxed">
-                    {{ __('Built for solo freelancers, senior developers, and consultants who just want the number to invoice.') }}
+                    {{ __('Built for solo developers and consultants who manage their own clients and already have an invoicing tool. No team management, employee monitoring, or accounting suite to learn.') }}
                 </p>
             </div>
         </div>
     </section>
 
     <!-- Pricing Section -->
-    @php
-        $userCounter = app(\App\Services\UserCounterService::class);
-        $totalUsers = $userCounter->getTotalUsers();
-        $remainingSlots = $userCounter->getRemainingFreeSlots();
-    @endphp
-
     <section id="pricing" class="section-spacing bg-gradient-to-br from-[var(--color-bg)] to-[var(--color-surface)]">
         <div class="max-w-7xl mx-auto px-6 lg:px-8">
             <!-- Section Header -->
             <div class="text-center mb-16">
                 <h2 class="text-4xl sm:text-5xl font-display mb-6 text-[var(--color-text)]">
-                    {{ __('Simple, Honest Pricing') }}
+                    {{ __('One plan. Everything included.') }}
                 </h2>
                 <p class="text-lg text-[var(--color-text-secondary)] max-w-2xl mx-auto leading-relaxed">
-                    {{ __('No hidden fees. No complicated tiers. Just straightforward time tracking that respects your time and your budget.') }}
+                    {{ __('Use SimpleTimer in your browser. We handle the hosting, so you can focus on client work.') }}
                 </p>
             </div>
 
-            <!-- Early Adopter Banner -->
-            @if($remainingSlots > 0)
-                <div class="max-w-3xl mx-auto mb-12">
-                    <div class="bg-gradient-to-r from-green-50 to-emerald-50 border-2 border-green-200 rounded-2xl p-6 text-center">
-                        <div class="inline-flex items-center gap-2 bg-green-100 px-4 py-1.5 rounded-full text-sm font-semibold text-green-800 mb-3">
-                            🎉 {{ __('Early Adopter Offer') }}
-                        </div>
-                        <p class="text-2xl font-display text-[var(--color-text)] mb-2">
-                            {{ $remainingSlots }} {{ __('of 10 lifetime free spots remaining') }}
-                        </p>
-                        <p class="text-[var(--color-text-secondary)] mb-4">
-                            {{ __('Be one of the first 10 users. Get free access forever + help shape the product.') }}
-                        </p>
-                        <ul class="space-y-1 mb-3">
-                            <li class="flex items-center justify-center gap-2 text-sm text-[var(--color-text)]">
-                                <x-icons.check class="w-4 h-4 text-green-600 flex-shrink-0" />
-                                <span>{{ __('Free access forever + influence future features') }}</span>
-                            </li>
-                        </ul>
-                        <p class="text-sm text-[var(--color-text-secondary)]">
-                            {{ __('Grandfathered into all future features included.') }}
-                        </p>
-                    </div>
-                </div>
-            @endif
-
-            <!-- Pricing Cards -->
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto mb-16">
-                <!-- Self-Hosted (Free Forever) -->
-                <div class="bg-[var(--color-surface)] rounded-3xl p-8 border-2 border-[var(--color-primary)] relative overflow-hidden transform transition-all hover:scale-105">
-                    <div class="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-[var(--color-primary-light)] to-[var(--color-accent-light)] rounded-full opacity-50 blur-2xl"></div>
-
-                    <div class="relative z-10">
-                        <div class="inline-flex items-center gap-2 bg-[var(--color-primary-light)] text-[var(--color-primary)] px-3 py-1 rounded-full text-xs font-semibold mb-6">
-                            {{ __('Open Source') }}
-                        </div>
-
-                        <h3 class="text-2xl font-display mb-2 text-[var(--color-text)]">{{ __('Self-Hosted') }}</h3>
-                        <div class="mb-6">
-                            <span class="text-4xl font-display text-[var(--color-text)]">{{ __('Free') }}</span>
-                            <span class="text-[var(--color-text-secondary)]"> {{ __('forever') }}</span>
-                        </div>
-                        <p class="text-sm text-[var(--color-text-secondary)] mb-6">{{ __('Host on your server, keep your data') }}</p>
-
-                        <ul class="space-y-3 mb-8">
-                            <li class="flex items-start gap-2 text-sm">
-                                <x-icons.check class="w-5 h-5 text-[var(--color-primary)] mt-0.5 flex-shrink-0" />
-                                <span class="text-[var(--color-text)]">{{ __('Full source code access') }}</span>
-                            </li>
-                            <li class="flex items-start gap-2 text-sm">
-                                <x-icons.check class="w-5 h-5 text-[var(--color-primary)] mt-0.5 flex-shrink-0" />
-                                <span class="text-[var(--color-text)]">{{ __('All core features included') }}</span>
-                            </li>
-                            <li class="flex items-start gap-2 text-sm">
-                                <x-icons.check class="w-5 h-5 text-[var(--color-primary)] mt-0.5 flex-shrink-0" />
-                                <span class="text-[var(--color-text)]">{{ __('Complete data control') }}</span>
-                            </li>
-                            <li class="flex items-start gap-2 text-sm">
-                                <x-icons.check class="w-5 h-5 text-[var(--color-primary)] mt-0.5 flex-shrink-0" />
-                                <span class="text-[var(--color-text)]">{{ __('Community support') }}</span>
-                            </li>
-                        </ul>
-
-                        <a href="https://github.com/jcergolj/simpletimer" target="_blank" rel="noopener noreferrer" class="block text-center btn-primary px-6 py-3 rounded-xl text-sm font-semibold group">
-                            <span class="inline-flex items-center gap-2">
-                                <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
-                                    <path fill-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z" clip-rule="evenodd" />
-                                </svg>
-                                {{ __('Self-host now — Free forever') }}
-                            </span>
-                        </a>
-                    </div>
-                </div>
-
+            <div class="max-w-xl mx-auto">
                 <!-- Managed SaaS -->
-                <div class="bg-[var(--color-surface)] rounded-3xl p-8 border-2 border-[var(--color-border)] relative overflow-hidden transform transition-all hover:scale-105">
+                <div class="bg-[var(--color-surface)] rounded-3xl p-8 border-2 border-[var(--color-primary)] relative overflow-hidden">
                     <div class="relative z-10">
                         <div class="inline-flex items-center gap-2 bg-green-100 px-3 py-1 rounded-full text-xs font-semibold text-green-800 mb-6">
-                            {{ __('Risk-Free') }}
+                            {{ __(':days-day free trial', ['days' => config('app.trial_period_days')]) }}
                         </div>
 
-                        <h3 class="text-2xl font-display mb-2 text-[var(--color-text)]">{{ __('Managed SaaS') }}</h3>
+                        <h3 class="text-2xl font-display mb-2 text-[var(--color-text)]">{{ __('Hosted for you') }}</h3>
                         <div class="mb-6">
                             <span class="text-4xl font-display text-[var(--color-text)]">{{ config('app.yearly_price') }}</span>
                             <span class="text-[var(--color-text-secondary)]">/{{ __('year') }}</span>
                         </div>
-                        <p class="text-sm text-[var(--color-text-secondary)] mb-6">{{ __('Try all features free for 60 days. Cancel anytime — risk-free.') }}</p>
-                        <p class="text-sm text-[var(--color-text-secondary)] mb-6 font-medium">{{ __('60 days is enough to see exactly how much time you save and how easily you can invoice your clients.') }}</p>
+                        <p class="text-sm text-[var(--color-text-secondary)] mb-6">{{ __(':days-day free trial, then :price/year.', ['days' => config('app.trial_period_days'), 'price' => config('app.yearly_price')]) }}</p>
+                        <p class="text-sm text-[var(--color-text-secondary)] mb-6">{{ __('Try it on real client work before deciding whether to subscribe.') }}</p>
 
                         <ul class="space-y-3 mb-8">
                             <li class="flex items-start gap-2 text-sm">
@@ -315,23 +243,31 @@
                             </li>
                             <li class="flex items-start gap-2 text-sm">
                                 <x-icons.check class="w-5 h-5 text-green-600 mt-0.5 flex-shrink-0" />
-                                <span class="text-[var(--color-text)]">{{ __('All features included, risk-free') }}</span>
+                                <span class="text-[var(--color-text)]">{{ __('Timer, manual entries, hourly rates & reports') }}</span>
                             </li>
                             <li class="flex items-start gap-2 text-sm">
                                 <x-icons.check class="w-5 h-5 text-green-600 mt-0.5 flex-shrink-0" />
-                                <span class="text-[var(--color-text)]">{{ __('Cancel anytime, no contracts') }}</span>
+                                <span class="text-[var(--color-text)]">{{ __('CSV exports for your invoicing workflow') }}</span>
                             </li>
                             <li class="flex items-start gap-2 text-sm">
                                 <x-icons.check class="w-5 h-5 text-green-600 mt-0.5 flex-shrink-0" />
-                                <span class="text-[var(--color-text)]">{{ config('app.refund_period_days') }}-{{ __('day money-back guarantee') }}</span>
+                                <span class="text-[var(--color-text)]">{{ __('Hosting included. No server to maintain.') }}</span>
                             </li>
                         </ul>
 
-                        <a href="{{ route('register') }}" class="block text-center btn-secondary px-6 py-3 rounded-xl text-sm font-semibold">
-                            {{ __('Start free trial') }}
-                        </a>
+                        @auth
+                            <a href="{{ route('dashboard') }}" class="block text-center btn-primary px-6 py-3 rounded-xl text-sm font-semibold">{{ __('Go to Dashboard') }}</a>
+                        @else
+                            @if (Route::has('register') && !\App\Models\User::exists())
+                                <a href="{{ route('register') }}" class="block text-center btn-primary px-6 py-3 rounded-xl text-sm font-semibold">{{ __('Start free trial') }}</a>
+                            @endif
+                        @endauth
                     </div>
                 </div>
+                <p class="text-center text-sm text-[var(--color-text-secondary)] mt-6">
+                    {{ __('Prefer to self-host?') }}
+                    <a href="https://github.com/jcergolj/simpletimer#readme" target="_blank" rel="noopener noreferrer" class="underline hover:text-[var(--color-primary)]">{{ __('Get the source code and self-host for free.') }}</a>
+                </p>
             </div>
         </div>
     </section>
@@ -341,10 +277,10 @@
         <div class="max-w-7xl mx-auto px-6 lg:px-8">
             <div class="text-center mb-20">
                 <h2 class="text-4xl sm:text-5xl font-display mb-4 text-[var(--color-text)]">
-                    {{ __('Everything You Need to Track Time') }}
+                    {{ __('From client work to invoice-ready totals') }}
                 </h2>
                 <p class="text-lg text-[var(--color-text-secondary)] max-w-2xl mx-auto">
-                    {{ __('Dead simple timer. Client management. Reports. That\'s it.') }}
+                    {{ __('Track your hours, keep client work organised, and use the totals in your existing invoicing tool.') }}
                 </p>
             </div>
 
@@ -376,7 +312,7 @@
                         </li>
                         <li class="flex items-start gap-2">
                             <x-icons.check class="w-5 h-5 text-[var(--color-primary)] mt-0.5 flex-shrink-0" />
-                            <span>{{ __('No tutorials, no setup') }}</span>
+                            <span>{{ __('Add time manually when you forget the timer') }}</span>
                         </li>
                     </ul>
                 </div>
@@ -488,10 +424,10 @@
                     {{ __('Why SimpleTimer') }}
                 </h2>
                 <p class="text-2xl font-display text-[var(--color-text-secondary)] leading-relaxed mb-6">
-                    {{ __('"No onboarding. No tutorials. Just track time, see what to invoice, move on."') }}
+                    {{ __('Track your work. Check your totals. Get on with your day.') }}
                 </p>
                 <p class="text-lg text-[var(--color-text-muted)] leading-relaxed">
-                    {{ __('SimpleTimer is built for freelancers who already know what they\'re doing.') }}
+                    {{ __('SimpleTimer keeps time tracking separate from accounting, so you can keep the invoicing workflow you already use.') }}
                 </p>
             </div>
         </div>
@@ -502,7 +438,7 @@
         <div class="max-w-4xl mx-auto px-6 lg:px-8">
             <div class="text-center">
                 <h2 class="text-3xl sm:text-4xl font-display mb-6 text-[var(--color-text)]">
-                    {{ __('Open Source + SaaS License = You Win') }}
+                    {{ __('Your time records stay yours') }}
                 </h2>
                 <p class="text-lg text-[var(--color-text-secondary)] leading-relaxed mb-8">
                     {{ __('SimpleTimer is O\'Saasy licensed. That means you can self-host it on your server for free forever. Or use our managed version. Either way, your data is yours. You\'re never locked in.') }}
@@ -533,40 +469,40 @@
                     {{ __('Questions?') }}
                 </h2>
                 <p class="text-lg text-[var(--color-text-secondary)]">
-                    {{ __('Here\'s what freelancers usually ask:') }}
+                    {{ __('A few things to know before you start.') }}
                 </p>
             </div>
 
             <div class="space-y-6">
                 <!-- FAQ 1 - Moved to first (biggest misconception) -->
                 <div class="bg-[var(--color-surface)] rounded-2xl p-8 border-2 border-[var(--color-border-light)] hover:border-[var(--color-primary)] transition-colors">
-                    <h3 class="font-display text-xl mb-3 text-[var(--color-text)]">{{ __('Do I need invoicing features?') }}</h3>
+                    <h3 class="font-display text-xl mb-3 text-[var(--color-text)]">{{ __('Does SimpleTimer create invoices?') }}</h3>
                     <p class="text-[var(--color-text-secondary)] leading-relaxed">
-                        {{ __('No. SimpleTimer produces clean reports you can plug into any invoicing tool.') }}
+                        {{ __('No. It tracks your hours and billable totals, with CSV reports you can export. Use those totals to create invoices in your existing invoicing tool.') }}
                     </p>
                 </div>
 
                 <!-- FAQ 2 -->
                 <div class="bg-[var(--color-surface)] rounded-2xl p-8 border-2 border-[var(--color-border-light)] hover:border-[var(--color-primary)] transition-colors">
-                    <h3 class="font-display text-xl mb-3 text-[var(--color-text)]">{{ __('Is it really free forever?') }}</h3>
+                    <h3 class="font-display text-xl mb-3 text-[var(--color-text)]">{{ __('How much does the hosted version cost?') }}</h3>
                     <p class="text-[var(--color-text-secondary)] leading-relaxed">
-                        {{ __('Yes. Self-hosted stays free forever. Managed SaaS is optional.') }}
+                        {{ __(':price per year, with all features and hosting included. Start with a :days-day free trial to see whether it fits your client work.', ['price' => config('app.yearly_price'), 'days' => config('app.trial_period_days')]) }}
                     </p>
                 </div>
 
                 <!-- FAQ 3 -->
                 <div class="bg-[var(--color-surface)] rounded-2xl p-8 border-2 border-[var(--color-border-light)] hover:border-[var(--color-primary)] transition-colors">
-                    <h3 class="font-display text-xl mb-3 text-[var(--color-text)]">{{ __('How hard is self-hosting?') }}</h3>
+                    <h3 class="font-display text-xl mb-3 text-[var(--color-text)]">{{ __('Do I need to set up a server?') }}</h3>
                     <p class="text-[var(--color-text-secondary)] leading-relaxed">
-                        {{ __('DigitalOcean, Vultr, or Linode install in 15 minutes. Need help? Laravel Forge handles it.') }}
+                        {{ __('No. The hosted version runs in your browser, with no server setup. Self-hosting is an optional, free alternative if you prefer to manage your own installation.') }}
                     </p>
                 </div>
 
                 <!-- FAQ 4 -->
                 <div class="bg-[var(--color-surface)] rounded-2xl p-8 border-2 border-[var(--color-border-light)] hover:border-[var(--color-primary)] transition-colors">
-                    <h3 class="font-display text-xl mb-3 text-[var(--color-text)]">{{ __('What if I break it?') }}</h3>
+                    <h3 class="font-display text-xl mb-3 text-[var(--color-text)]">{{ __('Can I take my time records with me?') }}</h3>
                     <p class="text-[var(--color-text-secondary)] leading-relaxed">
-                        {{ __('Community support via GitHub; fixes mostly in the README.') }}
+                        {{ __('Yes. You can export your time reports as CSV files. The source code is also available if you want to self-host.') }}
                     </p>
                 </div>
             </div>
@@ -581,7 +517,7 @@
                 <div class="md:col-span-2">
                     <h3 class="font-display text-2xl mb-4 text-[var(--color-text)]">{{ config('app.name', 'Simple Timer') }}</h3>
                     <p class="text-[var(--color-text-secondary)] leading-relaxed mb-6 max-w-md">
-                        {{ __('A simple time tracking web app for developers and freelancers who value simplicity and privacy.') }}
+                        {{ __('Simple time tracking for freelance developers and consultants. Track client work, see billable totals, and keep your existing invoicing tool.') }}
                     </p>
                     <div class="flex items-center gap-3">
                         <a href="https://github.com/jcergolj/simpletimer" target="_blank" rel="noopener noreferrer" class="w-10 h-10 bg-[var(--color-nav-bg)] hover:bg-[var(--color-primary)] rounded-xl flex items-center justify-center transition-all duration-300 group">
@@ -633,7 +569,7 @@
                         </li>
                         <li class="flex items-center gap-2">
                             <x-icons.check class="w-4 h-4 text-[var(--color-primary)]" />
-                            <span>{{ __('Built with Laravel 12') }}</span>
+                            <span>{{ __('Built with Laravel') }}</span>
                         </li>
                         <li class="flex items-center gap-2">
                             <x-icons.check class="w-4 h-4 text-orange-600" />

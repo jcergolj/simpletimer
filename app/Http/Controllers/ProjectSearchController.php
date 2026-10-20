@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Controllers;
 
 use App\Models\Client;
@@ -35,7 +37,7 @@ class ProjectSearchController extends Controller
             'projects' => $projects,
             'clientId' => $clientId,
             'selectedClient' => $selectedClient,
-            'defaultHourlyRate' => null,
+            'defaultHourlyRate' => $selectedClient?->hourlyRate ?? $request->user()->hourlyRate,
         ]);
     }
 }
