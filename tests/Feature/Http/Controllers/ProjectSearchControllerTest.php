@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Tests\Feature\Http\Controllers;
 
 use App\Enums\Currency;
@@ -12,7 +14,7 @@ use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 #[CoversClass(ProjectSearchController::class)]
-class ProjectSearchControllerTest extends TestCase
+final class ProjectSearchControllerTest extends TestCase
 {
     #[Test]
     public function a_new_project_uses_the_clients_rate_before_the_users_default(): void
